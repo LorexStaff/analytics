@@ -1,0 +1,120 @@
+import React, { useState } from "react";
+import styles from "./AuthForm.module.scss";
+import Button from "../../../../shared/components/Button/Button";
+import Input from "../../../../shared/components/Input/Input";
+import GoogleIcon from "../../assets/google-icon.svg";
+import VkIcon from "../../assets/vk-icon.svg";
+import Checkbox from "../../../../shared/components/Checkbox";
+import SocialButton from "../../../../shared/components/SocialButton/SocialButton";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginStart, loginSuccess, loginFailure } from "../../model/authSlice";
+import { login as fakeLogin, register as fakeRegister } from "../../api/auth";
+
+interface AuthFormProps {
+  type: "login" | "register";
+}
+
+const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(loginStart());
+    try {
+      if (type === "login") {
+        await fakeLogin(email, password);
+        dispatch(loginSuccess());
+        navigate("/");
+      } else {
+        await fakeRegister(email, password);
+        navigate("/login");
+      }
+    } catch (err: any) {
+      dispatch(loginFailure(err.message || "Something went wrong"));
+      setError(err.message || "Something went wrong");
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.gradient}>
+        <h1>Добро пожаловать!</h1>
+        <Button
+          variant="secondary"
+          size="medium"
+          className={styles.loginButton}
+          onClick={() =>
+            type === "login" ? navigate("/register") : navigate("/login")
+          }
+        >
+          {type === "login" ? "Зарегистрироваться" : "Войти"}
+        </Button>
+      </div>
+      <div className={styles.authContainer}>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <h1 className={styles.registrationTitle}>
+            {type === "login" ? "Вход" : "Регистрация"}
+          </h1>
+          <div className={styles.inputWrapper}>
+            <Input
+              type="email"
+              placeholder="Логин"
+              value={email}
+              onChange={(value) => setEmail(value)}
+            />
+          </div>
+          <div className={styles.inputWrapper}>
+            <Input
+              type="password"
+              placeholder="Пароль"
+              value={password}
+              onChange={(value) => setPassword(value)}
+            />
+          </div>
+          {error && <p className={styles.error}>{error}</p>}
+          {type === "login" && (
+            <div className={styles.checkboxWrapper}>
+              <Checkbox
+                label="Запомнить данные для входа"
+                checked={isChecked}
+                onChange={(checked) => setIsChecked(checked)}
+              />
+            </div>
+          )}
+          <Button
+            variant="primary"
+            className={styles.customButtom}
+            type="submit"
+          >
+            {type === "login" ? "Войти" : "Зарегистрироваться"}
+          </Button>
+        </form>
+        <div className={styles.socialLogin}>
+          <div className={styles.orTextContainer}>
+            <div className={styles.line}></div>
+            <p className={styles.orText}>Или войти с помощью</p>
+            <div className={styles.line}></div>
+          </div>
+          <div className={styles.iconContainer}>
+            <SocialButton icon={GoogleIcon} alt="Google" />
+            <SocialButton icon={VkIcon} alt="VK" />
+          </div>
+          {type === "login" && (
+            <div className={styles.forgotPassword}>
+              <span>Забыли пароль?</span>
+              <Link to="/forgot-password">Восстановить</Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AuthForm;

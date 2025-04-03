@@ -1,0 +1,46 @@
+$input-width: 300px;
+$input-height: 44px;
+$default-border-color: #8c8c8c;
+$active-border-color: #2784eb;
+
+.inputWrapper {
+  position: relative;
+  width: $input-width;
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  border: 1px solid $default-border-color;
+  border-radius: 4px;
+  height: $input-height;
+  transition: border-color 0.3s ease;
+
+  input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+
+    &::placeholder {
+      color: #ccc;
+    }
+  }
+
+  .eyeIcon,
+  .dropdownIcon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  &.active {
+    border-color: $active-border-color;
+  }
+}
+
+.dropdownInput {
+  cursor: pointer;
+}
