@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../../model/authSlice";
 import { login as fakeLogin, register as fakeRegister } from "../../api/auth";
+import { validateForm } from "../../model/validation";
 
 interface AuthFormProps {
   type: "login" | "register";
@@ -20,13 +21,24 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [apiError, setApiError] = useState<string | null>(null);
   const [isChecked, setIsChecked] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(loginStart());
+
+    const validationErrors = await validateForm({ email, password });
+    if (validationErrors) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
+    setApiError(null);
+
     try {
+      dispatch(loginStart());
       if (type === "login") {
         await fakeLogin(email, password);
         dispatch(loginSuccess());
@@ -37,7 +49,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
       }
     } catch (err: any) {
       dispatch(loginFailure(err.message || "Something went wrong"));
-      setError(err.message || "Something went wrong");
+      setApiError(err.message || "Something went wrong");
     }
   };
 
@@ -68,6 +80,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
               value={email}
               onChange={(value) => setEmail(value)}
             />
+            {errors.email && <p className={styles.error}>{errors.email}</p>}
           </div>
           <div className={styles.inputWrapper}>
             <Input
@@ -76,8 +89,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
               value={password}
               onChange={(value) => setPassword(value)}
             />
+            {errors.password && (
+              <p className={styles.error}>{errors.password}</p>
+            )}
           </div>
-          {error && <p className={styles.error}>{error}</p>}
+          {apiError && <p className={styles.error}>{apiError}</p>}
           {type === "login" && (
             <div className={styles.checkboxWrapper}>
               <Checkbox
