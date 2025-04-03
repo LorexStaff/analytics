@@ -1,6 +1,6 @@
 const FAKE_USER = {
   email: "user@example.com",
-  password: "password123",
+  password: "password123!",
 };
 
 export const login = async (email: string, password: string) => {
