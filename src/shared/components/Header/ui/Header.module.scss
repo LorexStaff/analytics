@@ -6,8 +6,35 @@
   align-items: center;
   justify-content: flex-start;
   padding-left: 24px;
+
+  @media (max-width: 1200px) {
+    height: 90px;
+    padding-left: 16px;
+  }
+
+  @media (max-width: 768px) {
+    height: 72px;
+    padding-left: 12px;
+  }
+
+  @media (max-width: 576px) {
+    height: 60px;
+    padding-left: 8px;
+  }
 }
 
 .logo img {
   height: 40px;
+
+  @media (max-width: 1200px) {
+    height: 36px;
+  }
+
+  @media (max-width: 768px) {
+    height: 32px;
+  }
+
+  @media (max-width: 576px) {
+    height: 28px;
+  }
 }

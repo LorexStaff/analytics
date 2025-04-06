@@ -22,6 +22,24 @@
   transform: translateX(-100%);
   border-top-right-radius: 40px;
 
+  @media (max-width: 1200px) {
+    --menu-width: 300px;
+    height: calc(100vh - 100px);
+    top: 100px;
+  }
+
+  @media (max-width: 992px) {
+    --menu-width: 250px;
+    height: calc(100vh - 80px);
+    top: 80px;
+  }
+
+  @media (max-width: 768px) {
+    --menu-width: 200px;
+    height: calc(100vh - 60px);
+    top: 60px;
+  }
+
   &.active {
     transform: translateX(0);
   }
@@ -55,6 +73,21 @@
       transition: all 0.3s ease-in-out;
       z-index: 2;
 
+      @media (max-width: 1200px) {
+        font-size: 18px;
+        width: calc(var(--menu-width) - 120px);
+      }
+
+      @media (max-width: 992px) {
+        font-size: 16px;
+        width: calc(var(--menu-width) - 110px);
+      }
+
+      @media (max-width: 768px) {
+        font-size: 14px;
+        width: calc(var(--menu-width) - 90px);
+      }
+
       &::after {
         content: "▼";
         font-size: 12px;
@@ -78,6 +111,21 @@
       visibility: hidden;
       transition: all 0.3s ease-in-out;
       z-index: 1;
+
+      @media (max-width: 1200px) {
+        width: 270px;
+        height: 55px;
+      }
+
+      @media (max-width: 992px) {
+        width: 235px;
+        height: 45px;
+      }
+
+      @media (max-width: 768px) {
+        width: 180px;
+        height: 40px;
+      }
     }
 
     .visibleOval {
@@ -108,6 +156,18 @@
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease-in-out;
+
+  @media (max-width: 1200px) {
+    left: 300px;
+  }
+
+  @media (max-width: 992px) {
+    left: 250px;
+  }
+
+  @media (max-width: 768px) {
+    left: 200px;
+  }
 
   &:hover {
     background-color: #b3ff3b;

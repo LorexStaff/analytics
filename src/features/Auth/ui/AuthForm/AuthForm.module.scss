@@ -5,13 +5,20 @@
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-color: #fff;
+  background-color: $secondary-main-color;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 .gradient {
-  width: 528px;
   height: 100vh;
   background-image: url("../../assets/auth-banner.png");
+  background-size: cover;
   font-size: 32px;
   display: flex;
   flex-direction: column;
@@ -23,6 +30,10 @@
     color: $secondary-main-color;
     margin-bottom: 40px;
   }
+
+  @media (max-width: 992px) {
+    display: none;
+  }
 }
 
 .authContainer {
@@ -33,36 +44,70 @@
   justify-content: center;
   align-items: center;
   padding: 0 20px;
-  background-color: #fff;
+  background-color: $secondary-main-color;
+
+  @media (max-width: 992px) {
+    min-width: auto;
+    width: 100%;
+  }
 }
 
 .registrationTitle {
-  margin-bottom: 22px;
+  margin-top: 0;
+  margin-bottom: 10px;
   font-size: 32px;
   text-align: left;
+
+  @media (max-width: 2560px) {
+    font-size: 36px;
+  }
+  @media (max-width: 1920px) {
+    font-size: 32px;
+  }
+  @media (max-width: 1200px) {
+    font-size: 28px;
+  }
+  @media (max-width: 992px) {
+    font-size: 24px;
+  }
 }
 
 .inputWrapper {
-  width: 300px;
-  margin-bottom: 16px;
-}
-
-.checkboxWrapper {
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .customButtom {
   width: 300px;
-  height: 44px;
+  height: 40px;
   margin-top: 20px;
+
+  @media (max-width: 2560px) {
+    height: 65px;
+    width: 500px;
+  }
+  @media (max-width: 1920px) {
+    height: 50px;
+    width: 400px;
+  }
+  @media (max-width: 1200px) {
+    height: 45px;
+    width: 400px;
+  }
+  @media (max-width: 576px) {
+    height: 40px;
+    max-width: 300px;
+  }
 }
 
 .socialLogin {
-  margin-top: 62px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (min-width: 1600px) {
+    margin-top: 40px;
+  }
 }
 
 .orTextContainer {
@@ -76,26 +121,74 @@
   height: 1px;
   background-color: #8c8c8c;
   flex-shrink: 0;
+
+  @media (min-width: 1440px) {
+    width: 150px;
+  }
+  @media (max-width: 1920px) {
+    width: 100px;
+  }
+  @media (max-width: 1200px) {
+    width: 100px;
+  }
+  @media (max-width: 992px) {
+    width: 70px;
+  }
+  @media (max-width: 768px) {
+    width: 100px;
+  }
+  @media (max-width: 576px) {
+    width: 60px;
+  }
 }
 
 .orText {
-  font-size: 20px;
+  font-size: 16px;
   color: #8c8c8c;
   white-space: nowrap;
+
+  @media (min-width: 1600px) {
+    font-size: 24px;
+  }
+  @media (max-width: 992px) {
+    font-size: 20px;
+  }
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 }
 
 .iconContainer {
   display: flex;
   gap: 23px;
-  margin-top: 20px;
+
+  @media (max-width: 768px) {
+    gap: 16px;
+  }
+  @media (max-width: 576px) {
+    gap: 12px;
+  }
+  @media (max-width: 376px) {
+    gap: 8px;
+  }
 }
 
 .forgotPassword {
-  margin-top: 80px;
+  margin-top: 20px;
   display: flex;
   gap: 10px;
-  font-size: 20px;
+  font-size: 16px;
   color: #8c8c8c;
+
+  @media (min-width: 1600px) {
+    font-size: 24px;
+  }
+  @media (max-width: 992px) {
+    font-size: 20px;
+  }
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 
   a {
     color: blue;
@@ -109,7 +202,14 @@
 
 .error {
   color: red;
-  font-size: 14px;
-  margin-top: 4px;
+  font-size: 24px;
+  margin-top: 3px;
   text-align: left;
+
+  @media (max-width: 2560px) {
+    font-size: 24px;
+  }
+  @media (max-width: 1920px) {
+    font-size: 14px;
+  }
 }
