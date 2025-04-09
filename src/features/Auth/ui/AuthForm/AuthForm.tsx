@@ -5,7 +5,7 @@ import Input from "../../../../shared/components/Input/Input";
 import GoogleIcon from "../../assets/google-icon.svg";
 import VkIcon from "../../assets/vk-icon.svg";
 import Checkbox from "../../../../shared/components/Checkbox";
-import SocialButton from "../../../../shared/components/SocialButton/SocialButton";
+import SocialButton from "../../../../shared/components/SocialButton/ui/SocialButton";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../../model/authSlice";

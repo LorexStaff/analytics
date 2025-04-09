@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from "./shared/components/Sidebar/Sidebar";
+import Sidebar from "./shared/components/Sidebar/ui/Sidebar";
 import {
   SidebarProvider,
   useSidebar,
