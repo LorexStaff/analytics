@@ -1,0 +1,328 @@
+.dropdown {
+  position: relative;
+  width: 250px;
+  height: 45px;
+  border-radius: 40px;
+  background-color: #ab9ef4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  cursor: pointer;
+  font-size: 16px;
+  color: black;
+
+  @media (max-width: 1920px) {
+    width: 220px;
+    height: 40px;
+    font-size: 15px;
+    padding: 0 12px;
+  }
+
+  @media (max-width: 1200px) {
+    width: 200px;
+    height: 38px;
+    font-size: 14px;
+    padding: 0 10px;
+  }
+
+  @media (max-width: 992px) {
+    width: 180px;
+    height: 36px;
+    font-size: 13px;
+    padding: 0 8px;
+  }
+
+  @media (max-width: 768px) {
+    width: 150px;
+    height: 34px;
+    font-size: 12px;
+    padding: 0 6px;
+  }
+
+  @media (max-width: 576px) {
+    width: 120px;
+    height: 30px;
+    font-size: 11px;
+    padding: 0 5px;
+  }
+
+  .closed {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 16px;
+
+      @media (max-width: 1920px) {
+        font-size: 15px;
+      }
+
+      @media (max-width: 1200px) {
+        font-size: 14px;
+      }
+
+      @media (max-width: 992px) {
+        font-size: 13px;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 12px;
+      }
+
+      @media (max-width: 576px) {
+        font-size: 11px;
+      }
+    }
+
+    .arrowIcon {
+      width: 10px;
+      height: 5px;
+      margin-left: 10px;
+      transition: transform 0.3s ease;
+
+      @media (max-width: 1200px) {
+        width: 8px;
+        height: 4px;
+        margin-left: 8px;
+      }
+
+      @media (max-width: 768px) {
+        width: 7px;
+        height: 3px;
+        margin-left: 6px;
+      }
+
+      @media (max-width: 576px) {
+        width: 6px;
+        height: 3px;
+        margin-left: 5px;
+      }
+    }
+
+    .rotated {
+      transform: rotate(180deg);
+    }
+  }
+
+  .open {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    max-height: 320px;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    z-index: 10;
+    margin-top: 8px;
+    padding: 15px;
+
+    @media (max-width: 1920px) {
+      width: 280px;
+      max-height: 300px;
+      padding: 12px;
+    }
+
+    @media (max-width: 1200px) {
+      width: 260px;
+      max-height: 280px;
+      padding: 10px;
+    }
+
+    @media (max-width: 992px) {
+      width: 240px;
+      max-height: 260px;
+      padding: 8px;
+    }
+
+    @media (max-width: 768px) {
+      width: 220px;
+      max-height: 240px;
+      padding: 6px;
+    }
+
+    @media (max-width: 576px) {
+      width: 200px;
+      max-height: 220px;
+      padding: 5px;
+    }
+
+    .projectList {
+      max-height: 120px;
+      overflow-y: auto;
+      padding-right: 10px;
+
+      @media (max-width: 1200px) {
+        max-height: 100px;
+        padding-right: 8px;
+      }
+
+      @media (max-width: 992px) {
+        max-height: 90px;
+        padding-right: 6px;
+      }
+
+      @media (max-width: 768px) {
+        max-height: 80px;
+        padding-right: 5px;
+      }
+
+      @media (max-width: 576px) {
+        max-height: 70px;
+        padding-right: 4px;
+      }
+
+      .projectItem {
+        padding: 10px 12px;
+        cursor: pointer;
+        border-radius: 8px;
+        margin-bottom: 5px;
+        font-size: 14px;
+
+        &:hover {
+          background-color: #f7f6fe;
+        }
+
+        &.selected {
+          background-color: #f7f6fe;
+        }
+
+        .checkmark {
+          float: right;
+          margin-top: 5px;
+          width: 16px;
+          height: 16px;
+
+          @media (max-width: 1200px) {
+            width: 14px;
+            height: 14px;
+          }
+
+          @media (max-width: 768px) {
+            width: 12px;
+            height: 12px;
+          }
+
+          @media (max-width: 576px) {
+            width: 10px;
+            height: 10px;
+          }
+        }
+
+        @media (max-width: 1200px) {
+          font-size: 13px;
+          padding: 8px 10px;
+        }
+
+        @media (max-width: 992px) {
+          font-size: 12px;
+          padding: 7px 9px;
+        }
+
+        @media (max-width: 768px) {
+          font-size: 11px;
+          padding: 6px 8px;
+        }
+
+        @media (max-width: 576px) {
+          font-size: 10px;
+          padding: 5px 7px;
+        }
+      }
+    }
+
+    .divider {
+      height: 1px;
+      background-color: #ccc;
+      margin: 8px 0;
+
+      @media (max-width: 1200px) {
+        margin: 6px 0;
+      }
+
+      @media (max-width: 768px) {
+        margin: 5px 0;
+      }
+
+      @media (max-width: 576px) {
+        margin: 4px 0;
+      }
+    }
+
+    .addButton {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      color: #000;
+      padding: 10px 12px;
+      border: none;
+      background-color: #eaeaea;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-left: auto;
+
+      @media (max-width: 1200px) {
+        font-size: 14px;
+        padding: 8px 10px;
+      }
+
+      @media (max-width: 992px) {
+        font-size: 13px;
+        padding: 7px 9px;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 12px;
+        padding: 6px 8px;
+      }
+
+      @media (max-width: 576px) {
+        font-size: 11px;
+        padding: 5px 7px;
+      }
+    }
+
+    .noProjectsButton {
+      width: 100%;
+      gap: 8px;
+      font-size: 16px;
+      color: #000;
+      padding: 10px 12px;
+      border: none;
+      background-color: #eaeaea;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+
+      @media (max-width: 1200px) {
+        font-size: 14px;
+        padding: 8px 10px;
+      }
+
+      @media (max-width: 992px) {
+        font-size: 13px;
+        padding: 7px 9px;
+      }
+
+      @media (max-width: 768px) {
+        font-size: 12px;
+        padding: 6px 8px;
+      }
+
+      @media (max-width: 576px) {
+        font-size: 11px;
+        padding: 5px 7px;
+      }
+    }
+  }
+}
