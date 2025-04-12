@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSidebar } from "../SidebarContext";
 import styles from "./Sidebar.module.scss";
@@ -11,6 +11,63 @@ import overviewnIcon from "../assets/overview-icon.svg";
 const Sidebar: React.FC = () => {
   const { isExpanded, toggleMenu } = useSidebar();
   const location = useLocation();
+  const [expandedItems, setExpandedItems] = useState<string[]>([]);
+
+  const toggleSubMenu = (itemKey: string) => {
+    setExpandedItems((prev) =>
+      prev.includes(itemKey)
+        ? prev.filter((key) => key !== itemKey)
+        : [...prev, itemKey]
+    );
+  };
+
+  const menuItems = [
+    {
+      to: "/",
+      label: "Обзор",
+      icon: overviewnIcon,
+      subMenu: [
+        { to: "/example1", label: "Example 1" },
+        { to: "/example2", label: "Example 2" },
+      ],
+    },
+    {
+      to: "/monetization",
+      label: "Монетизация",
+      icon: monetizationIcon,
+      subMenu: [
+        { to: "/monetization/example1", label: "Example 1" },
+        { to: "/monetization/example2", label: "Example 2" },
+      ],
+    },
+    {
+      to: "/engagement",
+      label: "Вовлеченность",
+      icon: engagementIcon,
+      subMenu: [
+        { to: "/engagement/example1", label: "Example 1" },
+        { to: "/engagement/example2", label: "Example 2" },
+      ],
+    },
+    {
+      to: "/productivity",
+      label: "Производительность",
+      icon: productivityIcon,
+      subMenu: [
+        { to: "/productivity/example1", label: "Example 1" },
+        { to: "/productivity/example2", label: "Example 2" },
+      ],
+    },
+    {
+      to: "/vr",
+      label: "VR",
+      icon: vrIcon,
+      subMenu: [
+        { to: "/vr/example1", label: "Example 1" },
+        { to: "/vr/example2", label: "Example 2" },
+      ],
+    },
+  ];
 
   return (
     <div className={styles.wrapper}>
@@ -20,49 +77,63 @@ const Sidebar: React.FC = () => {
       >
         {isExpanded ? "<" : ">"}
       </button>
-
       <div
         className={`${styles.sidebar_menu} ${isExpanded ? styles.active : ""}`}
+        style={{
+          width: isExpanded ? "var(--menu-width)" : "60px",
+        }}
       >
         <div className={styles.menu_content}>
-          {[
-            {
-              to: "/",
-              label: "Обзор",
-              icon: overviewnIcon,
-            },
-            {
-              to: "/monetization",
-              label: "Монетизация",
-              icon: monetizationIcon,
-            },
-            { to: "/engagement", label: "Вовлеченность", icon: engagementIcon },
-            {
-              to: "/productivity",
-              label: "Производительность",
-              icon: productivityIcon,
-            },
-            { to: "/vr", label: "VR", icon: vrIcon },
-          ].map((item) => (
+          {menuItems.map((item) => (
             <div key={item.to}>
               <Link
                 to={item.to}
                 className={
                   location.pathname === item.to ? styles.activeLink : ""
                 }
+                onClick={() => item.subMenu && toggleSubMenu(item.to)}
               >
                 <img
                   src={item.icon}
                   alt={`${item.label} icon`}
                   className={styles.icon}
                 />
-                {item.label}
+                {isExpanded && item.label}
+                {isExpanded ? (
+                  <span className={styles.arrow}>
+                    {item.subMenu &&
+                      (expandedItems.includes(item.to) ? "▲" : "▼")}
+                  </span>
+                ) : (
+                  <span className={styles.dot}>•</span>
+                )}
               </Link>
-              <div
-                className={`${styles.hover_oval} ${
-                  location.pathname === item.to ? styles.visibleOval : ""
-                }`}
-              ></div>
+              {!expandedItems.includes(item.to) && (
+                <div
+                  className={`${styles.hover_oval} ${
+                    isExpanded ? styles.expanded : styles.collapsed
+                  } ${location.pathname === item.to ? styles.visibleOval : ""}`}
+                ></div>
+              )}
+              {isExpanded &&
+                item.subMenu &&
+                expandedItems.includes(item.to) && (
+                  <div className={styles.sub_menu}>
+                    {item.subMenu.map((subItem) => (
+                      <Link
+                        key={subItem.to}
+                        to={subItem.to}
+                        className={
+                          location.pathname === subItem.to
+                            ? styles.activeLink
+                            : ""
+                        }
+                      >
+                        {subItem.label}
+                      </Link>
+                    ))}
+                  </div>
+                )}
             </div>
           ))}
         </div>
