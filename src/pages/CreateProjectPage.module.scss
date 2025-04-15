@@ -1,0 +1,77 @@
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formWrapper {
+  width: 400px;
+  height: 280px;
+  background-color: #ffffff;
+  border-radius: 40px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+
+  h2 {
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 30px;
+  width: 100%;
+}
+
+.buttonGroup > button {
+  flex: 1;
+  font-size: 16px;
+}
+
+.apiKeyCard {
+  text-align: center;
+
+  h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  .spanContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .apiKey {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+
+    span {
+      font-family: monospace;
+      background-color: #cacaca;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  }
+}
