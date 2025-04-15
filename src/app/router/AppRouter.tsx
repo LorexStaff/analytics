@@ -9,6 +9,7 @@ import Engagement from "../../pages/Engagement";
 import Productivity from "../../pages/Productivity";
 import VR from "../../pages/VR";
 import ProtectedRoute from "../providers/ProtectedRoute";
+import CreateProjectPage from "../../pages/CreateProjectPage";
 
 const AppRouter: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const AppRouter: React.FC = () => {
         <Route path="/engagement" element={<Engagement />} />
         <Route path="/productivity" element={<Productivity />} />
         <Route path="/vr" element={<VR />} />
+        <Route path="/create-project" element={<CreateProjectPage />} />
       </Route>
     </Routes>
   );
