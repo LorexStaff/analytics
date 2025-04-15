@@ -3,6 +3,7 @@ import styles from "./Dropdown.module.scss";
 import { getProjects } from "../api/api";
 import CheckmarkIcon from "../assets/Checkmark.svg";
 import ArrowDownIcon from "../assets/dropdown-vector.svg";
+import { useNavigate } from "react-router-dom";
 
 interface Project {
   id: number;
@@ -14,6 +15,7 @@ const Dropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getProjects().then((data) => {
@@ -45,6 +47,10 @@ const Dropdown: React.FC = () => {
   const handleProjectSelect = (project: Project) => {
     setSelectedProject(project);
     setIsOpen(false);
+  };
+
+  const handleAddProject = () => {
+    navigate("/create-project");
   };
 
   return (
@@ -85,12 +91,15 @@ const Dropdown: React.FC = () => {
 
               <div className={styles.divider}></div>
 
-              <button className={styles.addButton}>
+              <button className={styles.addButton} onClick={handleAddProject}>
                 <span>+</span> Добавить проект
               </button>
             </>
           ) : (
-            <button className={styles.noProjectsButton}>
+            <button
+              className={styles.noProjectsButton}
+              onClick={handleAddProject}
+            >
               <span>+</span> Добавить проект
             </button>
           )}
