@@ -63,37 +63,57 @@
 }
 
 .medium {
-  padding: 12px 24px;
+  padding: 10px 15px;
   font-size: 20px;
 
   @media (min-width: 2560px) {
-    padding: 18px 36px;
-    font-size: 28px;
-  }
-  @media (min-width: 1920px) {
-    padding: 16px 32px;
+    padding: 16px 28px;
     font-size: 24px;
   }
-  @media (min-width: 1200px) {
-    padding: 15px 30px;
+  @media (min-width: 1920px) {
+    padding: 14px 24px;
     font-size: 20px;
+  }
+  @media (min-width: 1200px) {
+    padding: 12px 18px;
+    font-size: 18px;
   }
 }
 
 .large {
-  padding: 24px 48px;
+  padding: 18px 36px;
   font-size: 18px;
 
   @media (min-width: 2560px) {
-    padding: 32px 64px;
+    padding: 24px 48px;
     font-size: 22px;
   }
   @media (min-width: 1920px) {
-    padding: 28px 56px;
+    padding: 22px 44px;
     font-size: 20px;
   }
   @media (min-width: 1200px) {
-    padding: 26px 52px;
+    padding: 20px 40px;
     font-size: 19px;
   }
+}
+
+.gray {
+  color: #000;
+  background-color: #8c8c8c;
+}
+
+.gray.small {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.gray.medium {
+  padding: 10px 15px;
+  font-size: 16px;
+}
+
+.gray.large {
+  padding: 18px 36px;
+  font-size: 18px;
 }
