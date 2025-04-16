@@ -6,6 +6,7 @@ import {
 } from "./shared/components/Sidebar/SidebarContext";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import Header from "./shared/components/Header";
+import Footer from "./widgets/Footer";
 import styles from "./shared/components/styles/global.module.scss";
 import AppRouter from "./app/router/AppRouter";
 
@@ -16,24 +17,40 @@ const AppContent: React.FC = () => {
   const shouldShowSidebar =
     location.pathname !== "/login" && location.pathname !== "/register";
 
-  const shouldShowHeader =
+  const shouldShowHeaderAndFooter =
     location.pathname !== "/login" && location.pathname !== "/register";
 
   return (
     <div className={styles.page_wrapper}>
-      {shouldShowHeader && <Header />}
-      <div style={{ display: "flex", height: "100vh" }}>
-        {shouldShowSidebar && <Sidebar />}
+      {shouldShowHeaderAndFooter && <Header />}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flex: 1,
+          minHeight: "90vh",
+        }}
+      >
         <div
-          className={styles.main_content}
           style={{
-            marginLeft: shouldShowSidebar && isExpanded ? "348px" : "0",
-            transition: "margin-left 0.3s ease-in-out",
-            paddingTop: shouldShowHeader ? "128px" : "0",
+            display: "flex",
+            flex: 1,
           }}
         >
-          <AppRouter />
+          {shouldShowSidebar && <Sidebar />}
+          <div
+            className={styles.main_content}
+            style={{
+              marginLeft: shouldShowSidebar && isExpanded ? "348px" : "0",
+              transition: "margin-left 0.3s ease-in-out",
+              paddingTop: shouldShowHeaderAndFooter ? "128px" : "0",
+              paddingBottom: shouldShowHeaderAndFooter ? "120px" : "0",
+            }}
+          >
+            <AppRouter />
+          </div>
         </div>
+        {shouldShowHeaderAndFooter && <Footer />}
       </div>
     </div>
   );
