@@ -244,3 +244,133 @@
   position: relative;
   width: 100%;
 }
+
+.collapseButtonContainer {
+  position: absolute;
+  top: calc(100vh - 520px);
+  left: -7px;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+
+  @media (max-height: 700px) {
+    top: calc(100vh - 480px);
+  }
+  @media (max-height: 600px) {
+    top: calc(100vh - 450px);
+  }
+  @media (max-height: 500px) {
+    top: calc(100vh - 430px);
+  }
+  @media (max-height: 400px) {
+    top: calc(100vh - 410px);
+  }
+}
+
+.rotated {
+  transform: rotate(180deg);
+}
+
+.collapseButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #000;
+  transition: color 0.4s ease;
+
+  &:hover {
+    color: #6952eb;
+  }
+
+  @media (max-height: 700px) {
+    font-size: 16px;
+  }
+  @media (max-height: 600px) {
+    font-size: 14px;
+  }
+}
+
+.collapseIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+
+  @media (max-width: 1200px) {
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (max-width: 992px) {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (max-width: 768px) {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.logoutButtonContainer {
+  position: absolute;
+  top: calc(100vh - 520px);
+  left: -7px;
+  display: flex;
+  align-items: center;
+
+  @media (max-height: 700px) {
+    top: calc(100vh - 480px);
+  }
+  @media (max-height: 600px) {
+    top: calc(100vh - 450px);
+  }
+  @media (max-height: 500px) {
+    top: calc(100vh - 440px);
+  }
+  @media (max-height: 400px) {
+    top: calc(100vh - 420px);
+  }
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #000;
+  transition: color 0.4s ease;
+
+  &:hover {
+    color: #6952eb;
+  }
+
+  @media (max-height: 700px) {
+    font-size: 16px;
+  }
+  @media (max-height: 600px) {
+    font-size: 14px;
+  }
+}
+
+.logoutIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+
+  @media (max-width: 992px) {
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (max-width: 768px) {
+    width: 16px;
+    height: 16px;
+  }
+}
