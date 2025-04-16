@@ -14,6 +14,7 @@ const Sidebar: React.FC = () => {
   const { isExpanded, toggleMenu } = useSidebar();
   const location = useLocation();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isCollapseIconRotated, setIsCollapseIconRotated] = useState(false);
   const navigate = useNavigate();
 
@@ -100,7 +101,11 @@ const Sidebar: React.FC = () => {
       >
         <div className={styles.menu_content}>
           {menuItems.map((item) => (
-            <div key={item.to}>
+            <div
+              key={item.to}
+              onMouseEnter={() => setHoveredItem(item.to)}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
               <Link
                 to={item.to}
                 className={
@@ -123,12 +128,22 @@ const Sidebar: React.FC = () => {
                   <span className={styles.dot}>•</span>
                 )}
               </Link>
-              {!expandedItems.includes(item.to) && (
-                <div
-                  className={`${styles.hover_oval} ${
-                    isExpanded ? styles.expanded : styles.collapsed
-                  } ${location.pathname === item.to ? styles.visibleOval : ""}`}
-                ></div>
+              {!isExpanded && hoveredItem === item.to && item.subMenu && (
+                <div className={styles.hover_submenu}>
+                  {item.subMenu.map((subItem) => (
+                    <Link
+                      key={subItem.to}
+                      to={subItem.to}
+                      className={
+                        location.pathname === subItem.to
+                          ? styles.activeLink
+                          : ""
+                      }
+                    >
+                      {subItem.label}
+                    </Link>
+                  ))}
+                </div>
               )}
               {isExpanded &&
                 item.subMenu &&
