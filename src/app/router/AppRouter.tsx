@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useParams } from "react-router-dom";
 import Login from "../../pages/LoginPage";
 import Registration from "../../pages/RegistrationPage";
 import OverviewPage from "../../pages/OverviewPage";
@@ -10,6 +10,7 @@ import Productivity from "../../pages/Productivity";
 import VR from "../../pages/VR";
 import ProtectedRoute from "../providers/ProtectedRoute";
 import CreateProjectPage from "../../pages/CreateProjectPage";
+import ErrorPage from "../../pages/ErrorPage";
 
 const AppRouter: React.FC = () => {
   return (
@@ -27,9 +28,47 @@ const AppRouter: React.FC = () => {
         <Route path="/productivity" element={<Productivity />} />
         <Route path="/vr" element={<VR />} />
         <Route path="/create-project" element={<CreateProjectPage />} />
+        <Route path="/error/:code" element={<ErrorPageWrapper />} />
+        <Route
+          path="*"
+          element={
+            <ErrorPage errorCode={404} errorMessage="Страница не найдена." />
+          }
+        />
       </Route>
     </Routes>
   );
+};
+
+const getErrorMessage = (code: number): string => {
+  switch (code) {
+    case 400:
+      return "Неверный запрос. Попробуйте снова.";
+    case 401:
+      return "Неавторизованный доступ. Пожалуйста, войдите в систему.";
+    case 403:
+      return "Доступ запрещён. У вас нет прав для просмотра этой страницы.";
+    case 404:
+      return "Страница не найдена.";
+    case 500:
+      return "Внутренняя ошибка сервера. Попробуйте позже.";
+    case 502:
+      return "Неверный шлюз. Попробуйте позже.";
+    case 503:
+      return "Сервис недоступен. Попробуйте позже.";
+    case 504:
+      return "Таймаут шлюза. Попробуйте позже.";
+    default:
+      return "Произошла неизвестная ошибка.";
+  }
+};
+
+const ErrorPageWrapper: React.FC = () => {
+  const { code } = useParams<{ code: string }>();
+  const errorCode = Number(code) || 500;
+  const errorMessage = getErrorMessage(errorCode);
+
+  return <ErrorPage errorCode={errorCode} errorMessage={errorMessage} />;
 };
 
 export default AppRouter;

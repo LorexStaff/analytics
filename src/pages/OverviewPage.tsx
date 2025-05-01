@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +11,7 @@ import {
   Filler,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-import fakeApi from "../data/fakeApi.json";
+import fetchFakeApi from "../data/fakeApi";
 import styles from "./OverviewPage.module.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -34,6 +35,7 @@ const OverviewPage: React.FC = () => {
   const [expandedGraphIndex, setExpandedGraphIndex] = useState<number | null>(
     null
   );
+  const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState<{
     key: keyof (typeof projects)[0]["data"][0] | "name";
     direction: "asc" | "desc";
@@ -47,16 +49,24 @@ const OverviewPage: React.FC = () => {
   ]);
 
   useEffect(() => {
-    try {
-      console.log("Данные успешно загружены:", fakeApi);
-      setProjects(fakeApi);
-      setSortedProjects(fakeApi);
-      setLoading(false);
-    } catch (error) {
-      console.error("Ошибка при загрузке данных:", error);
-      setLoading(false);
-    }
-  }, []);
+    const fetchData = async () => {
+      try {
+        const data = await fetchFakeApi();
+        console.log("Данные успешно загружены:", data);
+        setProjects(data);
+        setSortedProjects(data);
+        setLoading(false);
+      } catch (error: any) {
+        console.error("Ошибка при загрузке данных:", error.message);
+        const errorCode = error.statusCode || 500;
+        navigate(`/error/${errorCode}`, {
+          state: { message: error.message },
+        });
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
 
   const handleCheckboxChange = (projectName: string) => {
     setSelectedProjects((prev) =>

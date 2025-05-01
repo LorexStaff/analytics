@@ -15,10 +15,14 @@ const AppContent: React.FC = () => {
   const location = useLocation();
 
   const shouldShowSidebar =
-    location.pathname !== "/login" && location.pathname !== "/register";
+    location.pathname !== "/login" &&
+    location.pathname !== "/register" &&
+    !location.pathname.startsWith("/error");
 
   const shouldShowHeaderAndFooter =
-    location.pathname !== "/login" && location.pathname !== "/register";
+    location.pathname !== "/login" &&
+    location.pathname !== "/register" &&
+    !location.pathname.startsWith("/error");
 
   return (
     <div className={styles.page_wrapper}>
