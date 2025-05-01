@@ -28,7 +28,7 @@ const AppContent: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           flex: 1,
-          minHeight: "90vh",
+          minHeight: "calc(100vh - 100px)",
         }}
       >
         <div
@@ -43,8 +43,8 @@ const AppContent: React.FC = () => {
             style={{
               marginLeft: shouldShowSidebar && isExpanded ? "348px" : "0",
               transition: "margin-left 0.3s ease-in-out",
-              paddingTop: shouldShowHeaderAndFooter ? "128px" : "0",
-              paddingBottom: shouldShowHeaderAndFooter ? "120px" : "0",
+              paddingTop: shouldShowHeaderAndFooter ? "20px" : "0",
+              paddingBottom: shouldShowHeaderAndFooter ? "20px" : "0",
             }}
           >
             <AppRouter />
