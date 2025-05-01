@@ -1,15 +1,12 @@
 .page_wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   overflow: hidden;
 }
 
 .main_content {
   flex-grow: 1;
   overflow-y: auto;
-  padding-top: 128px;
-  transition: margin-left 0.3s ease-in-out;
 }
 
 body {
