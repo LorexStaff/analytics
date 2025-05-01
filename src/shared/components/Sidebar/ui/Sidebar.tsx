@@ -128,6 +128,13 @@ const Sidebar: React.FC = () => {
                   <span className={styles.dot}>•</span>
                 )}
               </Link>
+              {!expandedItems.includes(item.to) && (
+                <div
+                  className={`${styles.hover_oval} ${
+                    isExpanded ? styles.expanded : styles.collapsed
+                  } ${location.pathname === item.to ? styles.visibleOval : ""}`}
+                ></div>
+              )}
               {!isExpanded && hoveredItem === item.to && item.subMenu && (
                 <div className={styles.hover_submenu}>
                   {item.subMenu.map((subItem) => (
