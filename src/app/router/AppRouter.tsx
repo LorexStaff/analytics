@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Login from "../../pages/LoginPage";
 import Registration from "../../pages/RegistrationPage";
-import MainPage from "../../pages/MainPage";
+import OverviewPage from "../../pages/OverviewPage";
 import Projects from "../../pages/Projects";
 import Monetization from "../../pages/Monetization";
 import Engagement from "../../pages/Engagement";
@@ -20,7 +20,7 @@ const AppRouter: React.FC = () => {
 
       {/* Защищенные маршруты */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/" element={<MainPage />} />
+        <Route path="/" element={<OverviewPage />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/monetization" element={<Monetization />} />
         <Route path="/engagement" element={<Engagement />} />
