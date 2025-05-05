@@ -10,12 +10,14 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
 import fetchFakeApi from "../data/fakeApi";
 import styles from "./OverviewPage.module.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ProjectData } from "../entities/Project";
+import Widget from "../features/OverviewWidget/ui/Widget";
+import ProjectTable from "../widgets/ProjectTable/ui/ProjectTable";
+import AddWidgetModal from "../features/AddWidgetModal/ui/AddWidgetModal";
 
 ChartJS.register(
   CategoryScale,
@@ -27,7 +29,17 @@ ChartJS.register(
   Filler
 );
 
+interface WidgetInterface {
+  id: string;
+  type: "chart";
+  title: string;
+  key: keyof Omit<ProjectData["data"][0], "period">;
+}
+
 const OverviewPage: React.FC = () => {
+  const [widgets, setWidgets] = useState<WidgetInterface[]>([]);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [projects, setProjects] = useState<ProjectData[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
@@ -37,7 +49,7 @@ const OverviewPage: React.FC = () => {
   );
   const navigate = useNavigate();
   const [sortConfig, setSortConfig] = useState<{
-    key: keyof (typeof projects)[0]["data"][0] | "name";
+    key: keyof ProjectData["data"][0] | "name";
     direction: "asc" | "desc";
   } | null>(null);
   const [period, setPeriod] = useState<
@@ -74,6 +86,14 @@ const OverviewPage: React.FC = () => {
         ? prev.filter((name) => name !== projectName)
         : [...prev, projectName]
     );
+  };
+
+  const handleMasterCheckboxChange = () => {
+    if (selectedProjects.length === projects.length) {
+      setSelectedProjects([]);
+    } else {
+      setSelectedProjects(projects.map((project) => project.name));
+    }
   };
 
   type Period = "today" | "yesterday" | "week" | "month" | "quarter" | "range";
@@ -227,8 +247,44 @@ const OverviewPage: React.FC = () => {
       }),
   });
 
-  const newUsersChartData = createChartData("newUsers");
-  const activeUsersChartData = createChartData("activeUsers");
+  const handleAddWidget = (
+    title: string,
+    key: keyof Omit<ProjectData["data"][0], "period">
+  ) => {
+    if (!title || !key) return;
+
+    const newWidget: WidgetInterface = {
+      id: `widget-${Date.now()}`,
+      type: "chart",
+      title,
+      key,
+    };
+
+    setWidgets((prev) => [...prev, newWidget]);
+    setIsModalOpen(false);
+  };
+
+  const handleRemoveWidget = (id: string) => {
+    setWidgets((prev) => prev.filter((widget) => widget.id !== id));
+  };
+
+  const handleDragStart = (index: number) => {
+    setDraggedIndex(index);
+  };
+
+  const handleDragOver = (
+    event: React.DragEvent<HTMLDivElement>,
+    index: number
+  ) => {
+    event.preventDefault();
+    if (draggedIndex === null || draggedIndex === index) return;
+
+    const newWidgets = [...widgets];
+    const [draggedWidget] = newWidgets.splice(draggedIndex, 1);
+    newWidgets.splice(index, 0, draggedWidget);
+    setWidgets(newWidgets);
+    setDraggedIndex(index);
+  };
 
   return (
     <div>
@@ -236,7 +292,6 @@ const OverviewPage: React.FC = () => {
 
       <div className={styles.periodSelector}>
         <label>Выберите период:</label>
-
         {["today", "yesterday", "week", "month", "quarter", "range"].map(
           (periodOption) => (
             <button
@@ -263,7 +318,19 @@ const OverviewPage: React.FC = () => {
             />
           </div>
         )}
+        <button
+          className={styles.addButton}
+          onClick={() => setIsModalOpen(true)}
+        >
+          Добавить
+        </button>
       </div>
+
+      <AddWidgetModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAddWidget={handleAddWidget}
+      />
 
       <div className={styles.container}>
         {loading ? (
@@ -271,113 +338,49 @@ const OverviewPage: React.FC = () => {
         ) : (
           <>
             <div className={styles.widget}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    <th>
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedProjects.length === projects.length &&
-                          projects.length > 0
-                        }
-                        onChange={() =>
-                          setSelectedProjects(
-                            selectedProjects.length === projects.length
-                              ? []
-                              : projects.map((project) => project.name)
-                          )
-                        }
-                      />
-                    </th>
-                    <th onClick={() => handleSort("name")}>Проект</th>
-                    <th onClick={() => handleSort("newUsers")}>
-                      Новые пользователи
-                    </th>
-                    <th onClick={() => handleSort("activeUsers")}>
-                      Активные пользователи
-                    </th>
-                    <th onClick={() => handleSort("revenueGrowth")}>
-                      Прирост прибыли
-                    </th>
-                    <th onClick={() => handleSort("arpu")}>ARPU</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedProjects.map((project) => {
-                    const lastMonthData =
-                      project.data[project.data.length - 1] || project.data[0];
-                    return (
-                      <tr key={project.name}>
-                        <td>
-                          <input
-                            type="checkbox"
-                            checked={selectedProjects.includes(project.name)}
-                            onChange={() => handleCheckboxChange(project.name)}
-                          />
-                        </td>
-                        <td>{project.name}</td>
-                        <td>{lastMonthData.newUsers}</td>
-                        <td>{lastMonthData.activeUsers}</td>
-                        <td>{lastMonthData.revenueGrowth}</td>
-                        <td>{lastMonthData.arpu}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <ProjectTable
+                projects={sortedProjects}
+                selectedProjects={selectedProjects}
+                onCheckboxChange={handleCheckboxChange}
+                onMasterCheckboxChange={handleMasterCheckboxChange}
+                onSort={handleSort}
+              />
             </div>
 
-            {selectedProjects.length > 0 && (
-              <div className={styles.graphsContainer}>
-                {[
-                  {
-                    title: "График новых пользователей",
-                    data: newUsersChartData,
-                  },
-                  {
-                    title: "График активных пользователей",
-                    data: activeUsersChartData,
-                  },
-                ].map(({ title, data }, index) => (
-                  <div
-                    key={title}
-                    className={`${styles.graphWidget} ${
-                      expandedGraphIndex === index ? styles.expanded : ""
-                    }`}
-                  >
-                    <div className={styles.chartHeader}>
-                      <h2 className={styles.widgetTitle}>{title}</h2>
-                      <button
-                        className={styles.expandButton}
-                        onClick={() =>
-                          setExpandedGraphIndex(
-                            expandedGraphIndex === index ? null : index
-                          )
-                        }
-                      >
-                        {expandedGraphIndex === index
-                          ? "Свернуть"
-                          : "Развернуть"}
-                      </button>
-                    </div>
-                    <div className={styles.chartContainer}>
-                      <Line
-                        data={data}
-                        options={{
-                          responsive: true,
-                          maintainAspectRatio: false,
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
+            {widgets.length > 0 && (
+              <div
+                className={styles.graphsContainer}
+                style={{ display: "flex", flexWrap: "wrap" }}
+              >
+                {widgets.map((widget, index) => {
+                  const chartData = createChartData(widget.key);
+                  return (
+                    <Widget
+                      key={widget.id}
+                      id={widget.id}
+                      title={widget.title}
+                      chartData={chartData}
+                      isExpanded={expandedGraphIndex === index}
+                      isDragging={draggedIndex === index}
+                      onExpandToggle={() =>
+                        setExpandedGraphIndex(
+                          expandedGraphIndex === index ? null : index
+                        )
+                      }
+                      onRemove={() => handleRemoveWidget(widget.id)}
+                      onDragStart={() => handleDragStart(index)}
+                      onDragOver={(e) => handleDragOver(e, index)}
+                    />
+                  );
+                })}
               </div>
             )}
 
-            {selectedProjects.length === 0 && (
+            {widgets.length === 0 && (
               <div className={styles.noDataMessage}>
-                <p>Выберите проекты для отображения графиков.</p>
+                <p>
+                  Нет выбранных виджетов. Добавьте виджеты через кнопку выше.
+                </p>
               </div>
             )}
           </>
