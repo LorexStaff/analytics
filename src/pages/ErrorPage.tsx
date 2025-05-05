@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./ErrorPage.module.scss";
 
 interface ErrorPageProps {
@@ -7,6 +8,12 @@ interface ErrorPageProps {
 }
 
 const ErrorPage: React.FC<ErrorPageProps> = ({ errorCode, errorMessage }) => {
+  const navigate = useNavigate();
+
+  const handleRedirectToHome = () => {
+    navigate("/");
+  };
+
   return (
     <div className={styles.errorPage}>
       <h1 className={styles.title}>
@@ -16,11 +23,8 @@ const ErrorPage: React.FC<ErrorPageProps> = ({ errorCode, errorMessage }) => {
         {errorMessage ||
           "Попробуйте перезагрузить страницу или вернуться позже."}
       </p>
-      <button
-        className={styles.button}
-        onClick={() => window.location.reload()}
-      >
-        Перезагрузить страницу
+      <button className={styles.button} onClick={handleRedirectToHome}>
+        Вернуться на главную страницу
       </button>
     </div>
   );
