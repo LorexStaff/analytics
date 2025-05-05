@@ -1,0 +1,59 @@
+.graphWidget {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: calc(46% - 10px);
+  transition: width 0.3s ease;
+
+  &.expanded {
+    width: 100%;
+  }
+
+  &.dragging {
+    opacity: 1;
+    border: 1px solid #6952eb;
+    background-color: #f9f9f9;
+  }
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.widgetTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.expandButton {
+  background-color: #6952eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #563da7;
+  }
+}
+
+.chartContainer {
+  height: 400px;
+}
+
+.deleteButton {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
