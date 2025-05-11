@@ -2,7 +2,8 @@ import React from "react";
 import { Routes, Route, useParams } from "react-router-dom";
 import Login from "../../pages/LoginPage";
 import Registration from "../../pages/RegistrationPage";
-import OverviewPage from "../../pages/OverviewPage";
+import OverviewPage from "../../pages/Overview";
+import ReportPage from "../../pages/Report";
 import Projects from "../../pages/Projects";
 import Monetization from "../../pages/Monetization";
 import Engagement from "../../pages/Engagement";
@@ -22,6 +23,7 @@ const AppRouter: React.FC = () => {
       {/* Защищенные маршруты */}
       <Route element={<ProtectedRoute />}>
         <Route path="/" element={<OverviewPage />} />
+        <Route path="/reports" element={<ReportPage />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/monetization" element={<Monetization />} />
         <Route path="/engagement" element={<Engagement />} />
@@ -29,12 +31,6 @@ const AppRouter: React.FC = () => {
         <Route path="/vr" element={<VR />} />
         <Route path="/create-project" element={<CreateProjectPage />} />
         <Route path="/error/:code" element={<ErrorPageWrapper />} />
-        <Route
-          path="*"
-          element={
-            <ErrorPage errorCode={404} errorMessage="Страница не найдена." />
-          }
-        />
       </Route>
     </Routes>
   );

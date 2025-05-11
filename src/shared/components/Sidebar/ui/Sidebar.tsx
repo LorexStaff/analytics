@@ -9,6 +9,7 @@ import vrIcon from "../assets/vr-icon.svg";
 import overviewnIcon from "../assets/overview-icon.svg";
 import logoutIcon from "../assets/logout-icon.svg";
 import collapseIcon from "../assets/chevron-left.svg";
+import reportsIcon from "../assets/reports-icon.svg";
 
 const Sidebar: React.FC = () => {
   const { isExpanded, toggleMenu } = useSidebar();
@@ -41,10 +42,11 @@ const Sidebar: React.FC = () => {
       to: "/",
       label: "Обзор",
       icon: overviewnIcon,
-      subMenu: [
-        { to: "/example1", label: "Example 1" },
-        { to: "/example2", label: "Example 2" },
-      ],
+    },
+    {
+      to: "/reports",
+      label: "Отчеты",
+      icon: reportsIcon,
     },
     {
       to: "/monetization",
