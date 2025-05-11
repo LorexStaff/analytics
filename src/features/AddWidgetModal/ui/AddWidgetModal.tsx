@@ -1,67 +1,106 @@
 import React from "react";
 import styles from "./AddWidgetModal.module.scss";
 import { ProjectData } from "../../../entities/Project";
+import Select from "../../../shared/components/Select";
+import Button from "../../../shared/components/Button/Button";
+
+interface WidgetInterface {
+  id: string;
+  title: string;
+  key: keyof Omit<ProjectData["data"][0], "period">;
+  type: "chart" | "table" | "barchart" | "piechart" | "area" | "number";
+}
 
 interface AddWidgetModalProps {
   isOpen: boolean;
   onClose: () => void;
   onAddWidget: (
     title: string,
-    key: keyof Omit<ProjectData["data"][0], "period">
+    key: keyof Omit<ProjectData["data"][0], "period">,
+    type: "chart" | "table" | "barchart" | "piechart" | "area" | "number"
   ) => void;
+  savedWidgets: WidgetInterface[];
 }
 
 const AddWidgetModal: React.FC<AddWidgetModalProps> = ({
   isOpen,
   onClose,
   onAddWidget,
+  savedWidgets,
 }) => {
-  const [newWidgetTitle, setNewWidgetTitle] = React.useState("");
-  const [newWidgetKey, setNewWidgetKey] =
-    React.useState<keyof Omit<ProjectData["data"][0], "period">>("newUsers");
+  const [selectedWidgetId, setSelectedWidgetId] = React.useState<string>("");
 
   if (!isOpen) return null;
+
+  const selectedWidget = savedWidgets.find(
+    (widget) => widget.id === selectedWidgetId
+  );
+
+  const handleAddWidget = () => {
+    if (selectedWidget) {
+      onAddWidget(
+        selectedWidget.title,
+        selectedWidget.key,
+        selectedWidget.type
+      );
+      setSelectedWidgetId("");
+      onClose();
+    }
+  };
 
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
-        <button className={styles.closeButton} onClick={onClose}>
+        <Button
+          variant="gray"
+          size="small"
+          className={styles.closeButton}
+          onClick={onClose}
+        >
           ×
-        </button>
+        </Button>
 
         <h2>Добавить график</h2>
 
-        <input
-          type="text"
-          placeholder="Заголовок графика"
-          value={newWidgetTitle}
-          onChange={(e) => setNewWidgetTitle(e.target.value)}
+        <label>Выберите виджет:</label>
+        <Select
+          options={[
+            { value: "", label: "Выберите виджет" },
+            ...savedWidgets.map((widget) => ({
+              value: widget.id,
+              label: widget.title,
+            })),
+          ]}
+          value={selectedWidgetId}
+          onChange={(value) => setSelectedWidgetId(value)}
         />
 
-        <select
-          value={newWidgetKey}
-          onChange={(e) =>
-            setNewWidgetKey(
-              e.target.value as keyof Omit<ProjectData["data"][0], "period">
-            )
-          }
-        >
-          <option value="newUsers">Новые пользователи</option>
-          <option value="activeUsers">Активные пользователи</option>
-          <option value="revenueGrowth">Прирост прибыли</option>
-          <option value="arpu">ARPU</option>
-        </select>
+        {selectedWidget && (
+          <div className={styles.widgetInfo}>
+            <p>
+              <strong>Заголовок:</strong> {selectedWidget.title}
+            </p>
+            <p>
+              <strong>Метрика:</strong>{" "}
+              {selectedWidget.key.charAt(0).toUpperCase() +
+                selectedWidget.key.slice(1)}
+            </p>
+            <p>
+              <strong>Тип графика:</strong>{" "}
+              {selectedWidget.type.charAt(0).toUpperCase() +
+                selectedWidget.type.slice(1)}
+            </p>
+          </div>
+        )}
 
-        <button
-          onClick={() => {
-            onAddWidget(newWidgetTitle, newWidgetKey);
-            setNewWidgetTitle("");
-            setNewWidgetKey("newUsers");
-            onClose();
-          }}
+        <Button
+          variant="primary"
+          size="small"
+          onClick={handleAddWidget}
+          disabled={!selectedWidgetId}
         >
           Добавить график
-        </button>
+        </Button>
       </div>
     </div>
   );

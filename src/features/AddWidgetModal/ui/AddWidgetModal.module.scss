@@ -21,8 +21,8 @@
 
     .closeButton {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 5px;
+      right: 20px;
       width: 30px;
       height: 30px;
       background-color: #ff4d4d;
@@ -48,36 +48,28 @@
       font-weight: 400;
     }
 
-    h3 {
-      margin-top: 20px;
-    }
-
-    select,
-    input {
-      width: 100%;
-      padding: 8px;
+    label {
+      display: block;
       margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      font-size: 14px;
     }
 
-    input {
-      width: 382px;
+    select {
+      width: 100%;
+      font-size: 16px;
     }
 
     button {
-      background-color: #6952eb;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 40px;
-      cursor: pointer;
       width: 100%;
       margin-top: 10px;
       transition: background-color 0.3s ease;
+    }
 
-      &:hover {
-        background-color: #563da7;
+    .widgetInfo {
+      margin-top: 15px;
+
+      p {
+        margin: 5px 0;
       }
     }
   }

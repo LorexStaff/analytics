@@ -41,6 +41,7 @@
 .periodSelector {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   margin-bottom: 20px;
 
@@ -48,6 +49,16 @@
     font-size: 16px;
     font-weight: 500;
     color: #333;
+  }
+
+  .buttonsContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .rightAlignedButton {
+    margin-right: 20px;
   }
 }
 
@@ -98,15 +109,13 @@
 }
 
 .addButton {
-  background-color: #b3ff3b;
-  color: #000;
-  padding: 10px 24px;
-  border-radius: 7px;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  gap: 8px;
+  border-radius: 8px;
+  font-size: 14px;
 
-  &:hover {
-    background-color: #a3e737;
+  .icon {
+    width: 12px;
+    height: 12px;
+    fill: white;
   }
 }

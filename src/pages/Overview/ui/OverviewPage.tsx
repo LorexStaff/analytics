@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../../app/hooks";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,14 +11,16 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import fetchFakeApi from "../data/fakeApi";
+import fetchFakeApi from "../../../data/fakeApi";
 import styles from "./OverviewPage.module.scss";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ProjectData } from "../entities/Project";
-import Widget from "../features/OverviewWidget/ui/Widget";
-import ProjectTable from "../widgets/ProjectTable/ui/ProjectTable";
-import AddWidgetModal from "../features/AddWidgetModal/ui/AddWidgetModal";
+import { ProjectData } from "../../../entities/Project";
+import Widget from "../../../features/OverviewWidget/ui/Widget";
+import Button from "../../../shared/components/Button/Button";
+import ProjectTable from "../../../widgets/ProjectTable/ui/ProjectTable";
+import AddWidgetModal from "../../../features/AddWidgetModal/ui/AddWidgetModal";
+import plusIcon from "../assets/plus-icon.svg";
 
 ChartJS.register(
   CategoryScale,
@@ -31,12 +34,13 @@ ChartJS.register(
 
 interface WidgetInterface {
   id: string;
-  type: "chart";
+  type: "chart" | "table" | "barchart" | "piechart" | "area" | "number";
   title: string;
   key: keyof Omit<ProjectData["data"][0], "period">;
 }
 
 const OverviewPage: React.FC = () => {
+  const savedWidgets = useAppSelector((state) => state.report.widgets);
   const [widgets, setWidgets] = useState<WidgetInterface[]>([]);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,6 +63,13 @@ const OverviewPage: React.FC = () => {
     null,
     null,
   ]);
+
+  const mappedSavedWidgets = savedWidgets.map((widget) => ({
+    id: widget.id,
+    type: widget.type || "chart",
+    title: widget.title,
+    key: widget.metrics[0] || "newUsers",
+  }));
 
   useEffect(() => {
     const fetchData = async () => {
@@ -117,7 +128,6 @@ const OverviewPage: React.FC = () => {
 
     const quarterStart = new Date(today);
     quarterStart.setMonth(today.getMonth() - 3);
-
     const formatDate = (date: Date): string =>
       `${String(date.getDate()).padStart(2, "0")}.${String(
         date.getMonth() + 1
@@ -177,17 +187,27 @@ const OverviewPage: React.FC = () => {
 
         return data.map((project) => ({
           ...project,
-          data: project.data.filter(
-            (item) =>
-              item.period >= startFormatted && item.period <= endFormatted
-          ),
+          data: project.data.filter((item) => {
+            const itemDate = new Date(
+              `2025-${item.period.split(".").reverse().join("-")}`
+            );
+            const startDateObj = new Date(
+              `2025-${startFormatted.split(".").reverse().join("-")}`
+            );
+            const endDateObj = new Date(
+              `2025-${endFormatted.split(".").reverse().join("-")}`
+            );
+            return itemDate >= startDateObj && itemDate <= endDateObj;
+          }),
         }));
       default:
         return data;
     }
   };
 
-  const filteredProjects = filterDataByPeriod(projects, period, dateRange);
+  const filteredProjects = useMemo(() => {
+    return filterDataByPeriod(projects, period, dateRange);
+  }, [projects, period, dateRange]);
 
   const handleSort = (key: keyof (typeof projects)[0]["data"][0] | "name") => {
     let direction: "asc" | "desc" = "asc";
@@ -230,32 +250,50 @@ const OverviewPage: React.FC = () => {
   ];
 
   const createChartData = (
-    key: keyof Omit<(typeof projects)[0]["data"][0], "period">
-  ) => ({
-    labels: periods,
-    datasets: sortedProjects
-      .filter((project) => selectedProjects.includes(project.name))
-      .map((project, index) => {
-        const colorIndex = index % chartColors.length;
-        return {
-          label: project.name,
-          data: project.data.map((item) => item[key]),
-          borderColor: chartColors[colorIndex].borderColor,
-          backgroundColor: chartColors[colorIndex].backgroundColor,
-          fill: true,
-        };
-      }),
-  });
+    key: keyof Omit<(typeof projects)[0]["data"][0], "period">,
+    type: WidgetInterface["type"]
+  ) => {
+    const labels = periods;
+
+    const datasets =
+      type === "piechart"
+        ? [
+            {
+              label: "Общие данные",
+              data: sortedProjects
+                .filter((project) => selectedProjects.includes(project.name))
+                .flatMap((project) => project.data.map((item) => item[key])),
+              backgroundColor: chartColors.map(
+                (color) => color.backgroundColor
+              ),
+            },
+          ]
+        : sortedProjects
+            .filter((project) => selectedProjects.includes(project.name))
+            .map((project, index) => {
+              const colorIndex = index % chartColors.length;
+              return {
+                label: project.name,
+                data: project.data.map((item) => item[key]),
+                borderColor: chartColors[colorIndex].borderColor,
+                backgroundColor: chartColors[colorIndex].backgroundColor,
+                fill: type === "area",
+              };
+            });
+
+    return { labels, datasets };
+  };
 
   const handleAddWidget = (
     title: string,
-    key: keyof Omit<ProjectData["data"][0], "period">
+    key: keyof Omit<ProjectData["data"][0], "period">,
+    type: WidgetInterface["type"]
   ) => {
     if (!title || !key) return;
 
     const newWidget: WidgetInterface = {
       id: `widget-${Date.now()}`,
-      type: "chart",
+      type,
       title,
       key,
     };
@@ -286,50 +324,65 @@ const OverviewPage: React.FC = () => {
     setDraggedIndex(index);
   };
 
+  useEffect(() => {
+    setSortedProjects(filteredProjects);
+  }, [period, dateRange, filteredProjects]);
+
   return (
     <div>
       <h1 className={styles.title}>Обзор проектов</h1>
 
       <div className={styles.periodSelector}>
-        <label>Выберите период:</label>
-        {["today", "yesterday", "week", "month", "quarter", "range"].map(
-          (periodOption) => (
-            <button
-              key={periodOption}
-              className={`${styles.periodButton} ${
-                period === periodOption ? styles.active : ""
-              }`}
-              onClick={() => setPeriod(periodOption as any)}
-            >
-              {periodOption.charAt(0).toUpperCase() + periodOption.slice(1)}
-            </button>
-          )
-        )}
-        {period === "range" && (
-          <div>
-            <DatePicker
-              selectsRange
-              startDate={dateRange[0]}
-              endDate={dateRange[1]}
-              onChange={(update) => setDateRange(update)}
-              dateFormat="dd.MM.yyyy"
-              placeholderText="Выберите диапазон дат"
-              className={styles.datePickerInput}
-            />
-          </div>
-        )}
-        <button
-          className={styles.addButton}
-          onClick={() => setIsModalOpen(true)}
-        >
-          Добавить
-        </button>
+        <div className={styles.buttonsContainer}>
+          <label>Выберите период:</label>
+          {["today", "yesterday", "week", "month", "quarter", "range"].map(
+            (periodOption) => (
+              <Button
+                key={periodOption}
+                variant={period === periodOption ? "primary" : "secondary"}
+                size="small"
+                className={`${styles.periodButton} ${
+                  period === periodOption ? styles.active : ""
+                }`}
+                onClick={() => setPeriod(periodOption as any)}
+              >
+                {periodOption.charAt(0).toUpperCase() + periodOption.slice(1)}
+              </Button>
+            )
+          )}
+          {period === "range" && (
+            <div>
+              <DatePicker
+                selectsRange
+                startDate={dateRange[0]}
+                endDate={dateRange[1]}
+                onChange={(update) => setDateRange(update)}
+                dateFormat="dd.MM.yyyy"
+                placeholderText="Выберите диапазон дат"
+                className={styles.datePickerInput}
+              />
+            </div>
+          )}
+        </div>
+
+        <div className={styles.rightAlignedButton}>
+          <Button
+            variant="primary"
+            size="medium"
+            className={styles.addButton}
+            onClick={() => setIsModalOpen(true)}
+          >
+            Добавить виджет
+            <img src={plusIcon} alt="plus" className={styles.icon}></img>
+          </Button>
+        </div>
       </div>
 
       <AddWidgetModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAddWidget={handleAddWidget}
+        savedWidgets={mappedSavedWidgets}
       />
 
       <div className={styles.container}>
@@ -353,11 +406,12 @@ const OverviewPage: React.FC = () => {
                 style={{ display: "flex", flexWrap: "wrap" }}
               >
                 {widgets.map((widget, index) => {
-                  const chartData = createChartData(widget.key);
+                  const chartData = createChartData(widget.key, widget.type);
                   return (
                     <Widget
                       key={widget.id}
                       id={widget.id}
+                      type={widget.type}
                       title={widget.title}
                       chartData={chartData}
                       isExpanded={expandedGraphIndex === index}

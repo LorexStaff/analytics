@@ -1,0 +1,97 @@
+.reportsPage {
+  padding-right: 40px;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 400;
+  }
+}
+
+.dropdownContainer {
+  margin-bottom: 20px;
+}
+
+.savedWidgets {
+  h2 {
+    font-size: 18px;
+    color: #333;
+  }
+
+  .savedWidget {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      color: #555;
+    }
+  }
+}
+
+.saveButton {
+  display: flex;
+  align-items: center;
+  height: 44px;
+  gap: 8px;
+  border-radius: 7px;
+  font-size: 14px;
+  margin-left: auto;
+
+  &:hover {
+    background-color: #563da7;
+  }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .saved {
+    transform: scale(1.1);
+  }
+}
+
+.horizontalDropdowns {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.dropdownContainer {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 12px;
+    margin-bottom: 5px;
+    font-weight: 400;
+  }
+
+  select {
+    width: 290px;
+    font-size: 14px;
+  }
+}
+
+.widgetWrapper {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+
+  h2 {
+    margin-top: 0;
+  }
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}

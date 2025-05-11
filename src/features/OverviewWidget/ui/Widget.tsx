@@ -1,10 +1,12 @@
 import React from "react";
-import { Line } from "react-chartjs-2";
+import { Line, Bar, Pie } from "react-chartjs-2";
 import styles from "./Widget.module.scss";
 import binIcon from "../assets/bin.svg";
+import Button from "../../../shared/components/Button/Button";
 
 interface WidgetProps {
   id: string;
+  type: "chart" | "table" | "barchart" | "piechart" | "area" | "number";
   title: string;
   chartData: any;
   isExpanded: boolean;
@@ -15,8 +17,14 @@ interface WidgetProps {
   onDragOver: (event: React.DragEvent<HTMLDivElement>) => void;
 }
 
+interface TableRow {
+  Period: string;
+  [key: string]: string | number;
+}
+
 const Widget: React.FC<WidgetProps> = ({
   id,
+  type,
   title,
   chartData,
   isExpanded,
@@ -26,6 +34,128 @@ const Widget: React.FC<WidgetProps> = ({
   onDragStart,
   onDragOver,
 }) => {
+  const renderTable = () => {
+    if (!chartData.labels || !chartData.datasets) {
+      return <p>Нет данных для отображения</p>;
+    }
+
+    const rows: TableRow[] = chartData.datasets.map((dataset: any) => {
+      const row: TableRow = { Period: dataset.label };
+      chartData.labels.forEach((label: string, index: number) => {
+        row[label] = dataset.data[index];
+      });
+      return row;
+    });
+
+    return (
+      <div className={styles.tableWrapper}>
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              <th>Проект</th>
+              {chartData.labels.map((label: string) => (
+                <th key={label}>{label}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row: TableRow, rowIndex: number) => (
+              <tr key={rowIndex}>
+                <td>{row.Period}</td>
+                {chartData.labels.map((label: string) => (
+                  <td key={label}>{row[label]}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const renderChart = () => {
+    const commonOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: true },
+      },
+      scales: {
+        x: { beginAtZero: false },
+        y: { beginAtZero: false },
+      },
+    };
+
+    switch (type) {
+      case "chart":
+        return (
+          <Line
+            data={chartData}
+            options={{
+              ...commonOptions,
+              elements: {
+                line: {
+                  fill: false,
+                },
+              },
+            }}
+          />
+        );
+
+      case "barchart":
+        return <Bar data={chartData} options={commonOptions} />;
+
+      case "piechart":
+        if (!chartData.datasets || chartData.datasets.length === 0) {
+          return <p>Нет данных для отображения</p>;
+        }
+
+        const pieDataset = chartData.datasets[0];
+
+        return (
+          <Pie
+            data={{
+              labels: chartData.labels,
+              datasets: [
+                {
+                  ...pieDataset,
+                  data: pieDataset.data,
+                },
+              ],
+            }}
+            options={{
+              responsive: true,
+              maintainAspectRatio: false,
+            }}
+          />
+        );
+
+      case "area":
+        return (
+          <Line
+            data={chartData}
+            options={{
+              ...commonOptions,
+              elements: {
+                line: {
+                  fill: true,
+                },
+              },
+            }}
+          />
+        );
+
+      case "number":
+        return <div className={styles.number}>Пример числа: 123</div>;
+
+      case "table":
+        return renderTable();
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <div
       key={id}
@@ -39,23 +169,20 @@ const Widget: React.FC<WidgetProps> = ({
       <div className={styles.chartHeader}>
         <h2 className={styles.widgetTitle}>{title}</h2>
         <div className={styles.chartActions}>
-          <button className={styles.expandButton} onClick={onExpandToggle}>
+          <Button
+            variant="primary"
+            size="small"
+            className={styles.expandButton}
+            onClick={onExpandToggle}
+          >
             {isExpanded ? "Свернуть" : "Развернуть"}
-          </button>
+          </Button>
           <button className={styles.deleteButton} onClick={onRemove}>
             <img src={binIcon} alt="Bin icon" className={styles.binIcon} />
           </button>
         </div>
       </div>
-      <div className={styles.chartContainer}>
-        <Line
-          data={chartData}
-          options={{
-            responsive: true,
-            maintainAspectRatio: false,
-          }}
-        />
-      </div>
+      <div className={styles.chartContainer}>{renderChart()}</div>
     </div>
   );
 };
