@@ -1,27 +1,30 @@
 import React from "react";
 import styles from "./Footer.module.scss";
+import { useTranslation } from "react-i18next";
 
 const Footer: React.FC = () => {
+  const { t } = useTranslation();
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.links}>
             <a href="/user-agreement" className={styles.link}>
-              Пользовательское соглашение
+              {t("footer.userAgreement")}
             </a>
             <a href="/suggest-idea" className={styles.link}>
-              Предложить идею
+              {t("footer.suggestIdea")}
             </a>
             <a href="/advertising" className={styles.link}>
-              Реклама
+              {t("footer.advertising")}
             </a>
             <a href="/about" className={styles.link}>
-              О сервисе
+              {t("footer.about")}
             </a>
           </div>
 
-          <div className={styles.copyright}>© 2025 "ТПУ"</div>
+          <div className={styles.copyright}>{t("footer.copyright")}</div>
         </div>
       </div>
     </footer>

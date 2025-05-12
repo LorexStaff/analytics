@@ -1,0 +1,21 @@
+{
+  "reportsPage": {
+    "title": "Create Report",
+    "selectMetric": "Select metric",
+    "selectWidgetType": "Select widget type",
+    "selectGrouping": "Select grouping",
+    "saveWidget": "Save widget",
+    "loadingData": "Loading data...",
+    "none": "None",
+    "country": "By country",
+    "gender": "By gender"
+  },
+  "widget": {
+    "table": "Table",
+    "chart": "Chart",
+    "barchart": "Bar Chart",
+    "piechart": "Pie Chart",
+    "area": "Area Chart",
+    "number": "Number"
+  }
+}

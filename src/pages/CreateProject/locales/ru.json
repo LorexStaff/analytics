@@ -1,0 +1,12 @@
+{
+  "createProject": {
+    "title": "Добавление нового проекта",
+    "platformPlaceholder": "Выберите платформу",
+    "projectLinkPlaceholder": "Ссылка на проект",
+    "appNamePlaceholder": "Название приложения",
+    "apiKeyTitle": "Почти готово",
+    "apiKeyMessage": "Чтобы начать пользоваться аналитикой, интегрируйте SDK Best Analytics в приложение.",
+    "apiKeyLabel": "Ваш API ключ:",
+    "copyButton": "Скопировать"
+  }
+}

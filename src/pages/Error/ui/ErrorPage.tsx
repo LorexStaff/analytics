@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ErrorPage.module.scss";
+import { useTranslation } from "react-i18next";
 
 interface ErrorPageProps {
   errorCode?: number;
@@ -9,6 +10,7 @@ interface ErrorPageProps {
 
 const ErrorPage: React.FC<ErrorPageProps> = ({ errorCode, errorMessage }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleRedirectToHome = () => {
     navigate("/");
@@ -17,14 +19,17 @@ const ErrorPage: React.FC<ErrorPageProps> = ({ errorCode, errorMessage }) => {
   return (
     <div className={styles.errorPage}>
       <h1 className={styles.title}>
-        {errorCode ? `Ошибка ${errorCode}` : "Произошла ошибка"}
+        {errorCode
+          ? t("errorPage.title", { code: errorCode })
+          : t("errorPage.defaultTitle")}
       </h1>
       <p className={styles.message}>
-        {errorMessage ||
-          "Попробуйте перезагрузить страницу или вернуться позже."}
+        {errorMessage
+          ? t("errorPage.customMessage", { message: errorMessage })
+          : t("errorPage.message")}
       </p>
       <button className={styles.button} onClick={handleRedirectToHome}>
-        Вернуться на главную страницу
+        {t("common.backToHome")}
       </button>
     </div>
   );

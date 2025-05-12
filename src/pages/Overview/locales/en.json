@@ -1,0 +1,17 @@
+{
+  "overview": {
+    "title": "Project Overview",
+    "selectPeriod": "Select period:",
+    "addWidget": "Add widget",
+    "loadingData": "Loading data...",
+    "noWidgets": "No selected widgets. Add widgets using the button above.",
+    "periods": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "week": "Week",
+      "month": "Month",
+      "quarter": "Quarter",
+      "range": "Range"
+    }
+  }
+}

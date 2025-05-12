@@ -1,0 +1,7 @@
+{
+  "widgetEntity": {
+    "project": "Проект",
+    "noData": "Нет данных для отображения",
+    "exampleNumber": "Пример числа: {value}"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "errorPage": {
+    "title": "Error {{code}}",
+    "defaultTitle": "An error occurred",
+    "message": "Please try reloading the page or come back later.",
+    "customMessage": "{{message}}"
+  }
+}

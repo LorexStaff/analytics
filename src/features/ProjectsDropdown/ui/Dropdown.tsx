@@ -4,10 +4,11 @@ import { getProjects } from "../api/api";
 import CheckmarkIcon from "../assets/Checkmark.svg";
 import ArrowDownIcon from "../assets/dropdown-vector.svg";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface Project {
   id: number;
-  name: string;
+  nameKey: string;
 }
 
 const Dropdown: React.FC = () => {
@@ -16,6 +17,7 @@ const Dropdown: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     getProjects().then((data) => {
@@ -56,7 +58,11 @@ const Dropdown: React.FC = () => {
   return (
     <div className={styles.dropdown} ref={dropdownRef}>
       <div className={styles.closed} onClick={toggleDropdown}>
-        <span>{selectedProject ? selectedProject.name : "Нет проектов"}</span>
+        <span>
+          {selectedProject
+            ? t(selectedProject.nameKey)
+            : t("dropdown.noProjects")}{" "}
+        </span>
         <img
           src={ArrowDownIcon}
           alt="Arrow"
@@ -77,7 +83,7 @@ const Dropdown: React.FC = () => {
                     }`}
                     onClick={() => handleProjectSelect(project)}
                   >
-                    {project.name}
+                    {t(project.nameKey)}
                     {selectedProject?.id === project.id && (
                       <img
                         src={CheckmarkIcon}
@@ -92,7 +98,7 @@ const Dropdown: React.FC = () => {
               <div className={styles.divider}></div>
 
               <button className={styles.addButton} onClick={handleAddProject}>
-                <span>+</span> Добавить проект
+                <span>+</span> {t("dropdown.addProject")}{" "}
               </button>
             </>
           ) : (
@@ -100,7 +106,7 @@ const Dropdown: React.FC = () => {
               className={styles.noProjectsButton}
               onClick={handleAddProject}
             >
-              <span>+</span> Добавить проект
+              <span>+</span> {t("dropdown.addProject")}
             </button>
           )}
         </div>

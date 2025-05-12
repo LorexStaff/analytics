@@ -14,6 +14,7 @@ import {
 import { Line, Bar, Pie } from "react-chartjs-2";
 import styles from "./Widget.module.scss";
 import { ProjectData } from "../../Project";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -40,6 +41,8 @@ const Widget: React.FC<WidgetProps> = ({
   grouping,
   projects,
 }) => {
+  const { t } = useTranslation();
+
   const createChartData = () => {
     const labels = projects[0]?.data.map((item) => item.period) || [];
     const datasets = metrics.flatMap((metric, index) => {
@@ -81,7 +84,7 @@ const Widget: React.FC<WidgetProps> = ({
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>Проект</th>
+                  <th>{t("widgetEntity.project")}</th>
                   {projects[0]?.data.map((item, index) => (
                     <th key={index}>{item.period}</th>
                   ))}
@@ -129,7 +132,7 @@ const Widget: React.FC<WidgetProps> = ({
 
       case "piechart":
         if (!chartData.datasets || chartData.datasets.length === 0) {
-          return <p>Нет данных для отображения</p>;
+          return <p>{t("widgetEntity.noData")}</p>;
         }
 
         const pieDataset = chartData.datasets[0];
@@ -170,7 +173,11 @@ const Widget: React.FC<WidgetProps> = ({
         );
 
       case "number":
-        return <div className={styles.number}>Пример числа: 123</div>;
+        return (
+          <div className={styles.number}>
+            {t("widgetEntity.exampleNumber", { value: 123 })}
+          </div>
+        );
 
       default:
         return null;

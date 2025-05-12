@@ -5,16 +5,18 @@ import arrowDownIcon from "../assets/arrow-down.svg";
 import helpIcon from "../assets/headset.svg";
 import docsIcon from "../assets/file-earmark-text.svg";
 import contactIcon from "../assets/mail.svg";
+import { useTranslation } from "react-i18next";
 
 const menuItems = [
-  { label: "Помощь", icon: helpIcon },
-  { label: "Документация", icon: docsIcon },
-  { label: "Связаться с нами", icon: contactIcon },
+  { key: "help", icon: helpIcon },
+  { key: "documentation", icon: docsIcon },
+  { key: "contactUs", icon: contactIcon },
 ];
 
 const SettingsDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -51,10 +53,10 @@ const SettingsDropdown: React.FC = () => {
             <div key={index} className={styles.dropdownItem}>
               <img
                 src={item.icon}
-                alt={item.label}
+                alt={t(`settingsDropdown.${item.key}`)}
                 className={styles.itemIcon}
               />
-              <span>{item.label}</span>
+              <span>{t(`settingsDropdown.${item.key}`)}</span>
             </div>
           ))}
         </div>

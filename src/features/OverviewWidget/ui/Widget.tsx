@@ -3,6 +3,7 @@ import { Line, Bar, Pie } from "react-chartjs-2";
 import styles from "./Widget.module.scss";
 import binIcon from "../assets/bin.svg";
 import Button from "../../../shared/components/Button/Button";
+import { useTranslation } from "react-i18next";
 
 interface WidgetProps {
   id: string;
@@ -34,9 +35,11 @@ const Widget: React.FC<WidgetProps> = ({
   onDragStart,
   onDragOver,
 }) => {
+  const { t } = useTranslation();
+
   const renderTable = () => {
     if (!chartData.labels || !chartData.datasets) {
-      return <p>Нет данных для отображения</p>;
+      return <p>{t("widget.noData")}</p>;
     }
 
     const rows: TableRow[] = chartData.datasets.map((dataset: any) => {
@@ -52,7 +55,7 @@ const Widget: React.FC<WidgetProps> = ({
         <table className={styles.table}>
           <thead>
             <tr>
-              <th>Проект</th>
+              <th>{t("widget.project")}</th>
               {chartData.labels.map((label: string) => (
                 <th key={label}>{label}</th>
               ))}
@@ -107,7 +110,7 @@ const Widget: React.FC<WidgetProps> = ({
 
       case "piechart":
         if (!chartData.datasets || chartData.datasets.length === 0) {
-          return <p>Нет данных для отображения</p>;
+          return <p>{t("widget.noData")}</p>;
         }
 
         const pieDataset = chartData.datasets[0];
@@ -146,7 +149,11 @@ const Widget: React.FC<WidgetProps> = ({
         );
 
       case "number":
-        return <div className={styles.number}>Пример числа: 123</div>;
+        return (
+          <div className={styles.number}>
+            {t("widget.exampleNumber", { value: 123 })}
+          </div>
+        );
 
       case "table":
         return renderTable();
@@ -175,7 +182,7 @@ const Widget: React.FC<WidgetProps> = ({
             className={styles.expandButton}
             onClick={onExpandToggle}
           >
-            {isExpanded ? "Свернуть" : "Развернуть"}
+            {isExpanded ? t("widget.collapse") : t("widget.expand")}
           </Button>
           <button className={styles.deleteButton} onClick={onRemove}>
             <img src={binIcon} alt="Bin icon" className={styles.binIcon} />

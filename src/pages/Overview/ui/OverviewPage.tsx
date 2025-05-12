@@ -21,6 +21,7 @@ import Button from "../../../shared/components/Button/Button";
 import ProjectTable from "../../../widgets/ProjectTable/ui/ProjectTable";
 import AddWidgetModal from "../../../features/AddWidgetModal/ui/AddWidgetModal";
 import plusIcon from "../assets/plus-icon.svg";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -40,6 +41,7 @@ interface WidgetInterface {
 }
 
 const OverviewPage: React.FC = () => {
+  const { t } = useTranslation();
   const savedWidgets = useAppSelector((state) => state.report.widgets);
   const [widgets, setWidgets] = useState<WidgetInterface[]>([]);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
@@ -273,7 +275,7 @@ const OverviewPage: React.FC = () => {
             .map((project, index) => {
               const colorIndex = index % chartColors.length;
               return {
-                label: project.name,
+                label: t(`projects.${project.name}`),
                 data: project.data.map((item) => item[key]),
                 borderColor: chartColors[colorIndex].borderColor,
                 backgroundColor: chartColors[colorIndex].backgroundColor,
@@ -330,11 +332,11 @@ const OverviewPage: React.FC = () => {
 
   return (
     <div>
-      <h1 className={styles.title}>Обзор проектов</h1>
+      <h1 className={styles.title}>{t("overview.title")}</h1>
 
       <div className={styles.periodSelector}>
         <div className={styles.buttonsContainer}>
-          <label>Выберите период:</label>
+          <label>{t("overview.selectPeriod")}</label>
           {["today", "yesterday", "week", "month", "quarter", "range"].map(
             (periodOption) => (
               <Button
@@ -346,7 +348,7 @@ const OverviewPage: React.FC = () => {
                 }`}
                 onClick={() => setPeriod(periodOption as any)}
               >
-                {periodOption.charAt(0).toUpperCase() + periodOption.slice(1)}
+                {t(`overview.periods.${periodOption}`)}
               </Button>
             )
           )}
@@ -372,7 +374,7 @@ const OverviewPage: React.FC = () => {
             className={styles.addButton}
             onClick={() => setIsModalOpen(true)}
           >
-            Добавить виджет
+            {t("overview.addWidget")}
             <img src={plusIcon} alt="plus" className={styles.icon}></img>
           </Button>
         </div>
@@ -387,7 +389,7 @@ const OverviewPage: React.FC = () => {
 
       <div className={styles.container}>
         {loading ? (
-          <p>Загрузка данных...</p>
+          <p>{t("overview.loadingData")}</p>
         ) : (
           <>
             <div className={styles.widget}>
@@ -433,7 +435,7 @@ const OverviewPage: React.FC = () => {
             {widgets.length === 0 && (
               <div className={styles.noDataMessage}>
                 <p>
-                  Нет выбранных виджетов. Добавьте виджеты через кнопку выше.
+                  <p>{t("overview.noWidgets")}</p>
                 </p>
               </div>
             )}

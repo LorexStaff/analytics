@@ -1,0 +1,11 @@
+{
+  "project": {
+    "project1": "Проект 1",
+    "project2": "Проект 2",
+    "project3": "Проект 3"
+  },
+  "dropdown": {
+    "noProjects": "Нет проектов",
+    "addProject": "Добавить проект"
+  }
+}

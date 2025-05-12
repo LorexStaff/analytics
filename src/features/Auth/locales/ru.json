@@ -1,0 +1,23 @@
+{
+  "auth": {
+    "welcome": "Добро пожаловать!",
+    "login": "Войти",
+    "register": "Зарегистрироваться",
+    "emailPlaceholder": "Логин",
+    "passwordPlaceholder": "Пароль",
+    "forgotPassword": "Забыли пароль?",
+    "recoverPassword": "Восстановить",
+    "rememberMe": "Запомнить данные для входа",
+    "orText": "Или войти с помощью",
+    "switchToLogin": "Войти",
+    "switchToRegister": "Зарегистрироваться",
+    "validation": {
+      "emailInvalidFormat": "Неверный формат email",
+      "emailRequired": "Email обязателен",
+      "passwordMinLength": "Пароль должен содержать минимум {min} символов",
+      "passwordDigitRequired": "Пароль должен содержать хотя бы одну цифру",
+      "passwordSpecialCharRequired": "Пароль должен содержать хотя бы один спецсимвол",
+      "passwordRequired": "Пароль обязателен"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "projectTable": {
+    "project": "Project",
+    "newUsers": "New Users",
+    "activeUsers": "Active Users",
+    "revenueGrowth": "Revenue Growth",
+    "arpu": "ARPU"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "createProject": {
+    "title": "Add New Project",
+    "platformPlaceholder": "Select Platform",
+    "projectLinkPlaceholder": "Project Link",
+    "appNamePlaceholder": "App Name",
+    "apiKeyTitle": "Almost Done",
+    "apiKeyMessage": "To start using analytics, integrate the Best Analytics SDK into your app.",
+    "apiKeyLabel": "Your API Key:",
+    "copyButton": "Copy"
+  }
+}

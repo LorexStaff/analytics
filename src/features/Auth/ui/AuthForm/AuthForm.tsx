@@ -10,13 +10,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../../model/authSlice";
 import { login as fakeLogin, register as fakeRegister } from "../../api/auth";
-import { validateForm } from "../../model/validation";
+import { createValidationSchema, validateForm } from "../../model/validation";
+import { useTranslation } from "react-i18next";
 
 interface AuthFormProps {
   type: "login" | "register";
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -25,10 +27,15 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
   const [apiError, setApiError] = useState<string | null>(null);
   const [isChecked, setIsChecked] = useState(false);
 
+  const validationSchema = createValidationSchema(t);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const validationErrors = await validateForm({ email, password });
+    const validationErrors = await validateForm(
+      { email, password },
+      validationSchema
+    );
     if (validationErrors) {
       setErrors(validationErrors);
       return;
@@ -53,10 +60,15 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
     }
   };
 
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedLanguage = e.target.value;
+    i18n.changeLanguage(selectedLanguage);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.gradient}>
-        <h1>Добро пожаловать!</h1>
+        <h1>{t("auth.welcome")}</h1>
         <Button
           variant="secondary"
           size="medium"
@@ -65,18 +77,30 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
             type === "login" ? navigate("/register") : navigate("/login")
           }
         >
-          {type === "login" ? "Зарегистрироваться" : "Войти"}
+          {type === "login"
+            ? t("auth.switchToRegister")
+            : t("auth.switchToLogin")}
         </Button>
       </div>
       <div className={styles.authContainer}>
         <form className={styles.form} onSubmit={handleSubmit}>
+          <div className={styles.languageSelector}>
+            <select
+              onChange={handleLanguageChange}
+              defaultValue={i18n.language}
+            >
+              <option value="ru">Русский</option>
+              <option value="en">English</option>
+            </select>
+            <span className={styles.arrow}>▼</span>
+          </div>
           <h1 className={styles.registrationTitle}>
-            {type === "login" ? "Вход" : "Регистрация"}
+            {type === "login" ? t("auth.login") : t("auth.register")}
           </h1>
           <div className={styles.inputWrapper}>
             <Input
               type="email"
-              placeholder="Логин"
+              placeholder={t("auth.emailPlaceholder")}
               value={email}
               onChange={(value) => setEmail(value)}
             />
@@ -85,7 +109,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
           <div className={styles.inputWrapper}>
             <Input
               type="password"
-              placeholder="Пароль"
+              placeholder={t("auth.passwordPlaceholder")}
               value={password}
               onChange={(value) => setPassword(value)}
             />
@@ -97,7 +121,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
           {type === "login" && (
             <div className={styles.checkboxWrapper}>
               <Checkbox
-                label="Запомнить данные для входа"
+                label={t("auth.rememberMe")}
                 checked={isChecked}
                 onChange={(checked) => setIsChecked(checked)}
               />
@@ -108,13 +132,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
             className={styles.customButtom}
             type="submit"
           >
-            {type === "login" ? "Войти" : "Зарегистрироваться"}
+            {type === "login" ? t("auth.login") : t("auth.register")}
           </Button>
         </form>
         <div className={styles.socialLogin}>
           <div className={styles.orTextContainer}>
             <div className={styles.line}></div>
-            <p className={styles.orText}>Или войти с помощью</p>
+            <p className={styles.orText}>{t("auth.orText")}</p>
             <div className={styles.line}></div>
           </div>
           <div className={styles.iconContainer}>
@@ -123,8 +147,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
           </div>
           {type === "login" && (
             <div className={styles.forgotPassword}>
-              <span>Забыли пароль?</span>
-              <Link to="/forgot-password">Восстановить</Link>
+              <span>{t("auth.forgotPassword")}</span>
+              <Link to="/forgot-password">{t("auth.recoverPassword")}</Link>
             </div>
           )}
         </div>

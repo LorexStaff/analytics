@@ -4,15 +4,17 @@ import arrowDownIcon from "../assets/arrow-down.svg";
 import profileIcon from "../assets/profile-icon.svg";
 import logoutIcon from "../assets/logout-icon.svg";
 import userIcon from "../assets/User.svg";
+import { useTranslation } from "react-i18next";
 
 const menuItems = [
-  { label: "Профиль", icon: profileIcon },
-  { label: "Выйти", icon: logoutIcon },
+  { key: "profile", icon: profileIcon },
+  { key: "logout", icon: logoutIcon },
 ];
 
 const ProfileDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -36,7 +38,7 @@ const ProfileDropdown: React.FC = () => {
     <div className={styles.profileDropdown} ref={dropdownRef}>
       <div className={styles.trigger} onClick={toggleDropdown}>
         <img src={userIcon} alt="User" className={styles.userIcon} />
-        <span>Имя_пользователя</span>
+        <span>{t("profileDropdown.username")}</span>
         <img
           src={arrowDownIcon}
           alt="Arrow"
@@ -50,10 +52,10 @@ const ProfileDropdown: React.FC = () => {
             <div key={index} className={styles.dropdownItem}>
               <img
                 src={item.icon}
-                alt={item.label}
+                alt={t(`profileDropdown.${item.key}`)}
                 className={styles.itemIcon}
               />
-              <span>{item.label}</span>
+              <span>{t(`profileDropdown.${item.key}`)}</span>
             </div>
           ))}
         </div>

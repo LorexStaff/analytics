@@ -1,26 +1,28 @@
 import * as yup from "yup";
 
-const emailValidation = yup
-  .string()
-  .email("Неверный формат email")
-  .required("Email обязателен");
+export const createValidationSchema = (t: any) => {
+  const emailValidation = yup
+    .string()
+    .email(t("auth.validation.emailInvalidFormat"))
+    .required(t("auth.validation.emailRequired"));
 
-const passwordValidation = yup
-  .string()
-  .min(8, "Пароль должен содержать минимум 8 символов")
-  .matches(/[0-9]/, "Пароль должен содержать хотя бы одну цифру")
-  .matches(/[^a-zA-Z0-9]/, "Пароль должен содержать хотя бы один спецсимвол")
-  .required("Пароль обязателен");
+  const passwordValidation = yup
+    .string()
+    .min(8, t("auth.validation.passwordMinLength", { min: 8 }))
+    .matches(/[0-9]/, t("auth.validation.passwordDigitRequired"))
+    .matches(/[^a-zA-Z0-9]/, t("auth.validation.passwordSpecialCharRequired"))
+    .required(t("auth.validation.passwordRequired"));
 
-export const validationSchema = yup.object({
-  email: emailValidation,
-  password: passwordValidation,
-});
+  return yup.object({
+    email: emailValidation,
+    password: passwordValidation,
+  });
+};
 
-export const validateForm = async (values: {
-  email: string;
-  password: string;
-}) => {
+export const validateForm = async (
+  values: { email: string; password: string },
+  validationSchema: any
+) => {
   try {
     await validationSchema.validate(values, { abortEarly: false });
     return null;

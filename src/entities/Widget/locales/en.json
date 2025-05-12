@@ -1,0 +1,7 @@
+{
+  "widgetEntity": {
+    "project": "Project",
+    "noData": "No data available",
+    "exampleNumber": "Example number: {value}"
+  }
+}

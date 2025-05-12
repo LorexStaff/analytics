@@ -1,0 +1,12 @@
+{
+  "addWidgetModal": {
+    "title": "Add chart",
+    "selectWidget": "Select widget",
+    "widgetInfo": {
+      "title": "Title:",
+      "metric": "Metric:",
+      "chartType": "Chart type:"
+    },
+    "addChartButton": "Add chart"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "widget": {
+    "project": "Project",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "noData": "No data available",
+    "exampleNumber": "Example number: {value}"
+  }
+}

@@ -3,6 +3,7 @@ import styles from "./AddWidgetModal.module.scss";
 import { ProjectData } from "../../../entities/Project";
 import Select from "../../../shared/components/Select";
 import Button from "../../../shared/components/Button/Button";
+import { useTranslation } from "react-i18next";
 
 interface WidgetInterface {
   id: string;
@@ -29,6 +30,7 @@ const AddWidgetModal: React.FC<AddWidgetModalProps> = ({
   savedWidgets,
 }) => {
   const [selectedWidgetId, setSelectedWidgetId] = React.useState<string>("");
+  const { t } = useTranslation();
 
   if (!isOpen) return null;
 
@@ -60,12 +62,12 @@ const AddWidgetModal: React.FC<AddWidgetModalProps> = ({
           ×
         </Button>
 
-        <h2>Добавить график</h2>
+        <h2>{t("addWidgetModal.title")}</h2>
 
-        <label>Выберите виджет:</label>
+        <label>{t("addWidgetModal.selectWidget")}:</label>
         <Select
           options={[
-            { value: "", label: "Выберите виджет" },
+            { value: "", label: t("addWidgetModal.selectWidget") },
             ...savedWidgets.map((widget) => ({
               value: widget.id,
               label: widget.title,
@@ -78,15 +80,16 @@ const AddWidgetModal: React.FC<AddWidgetModalProps> = ({
         {selectedWidget && (
           <div className={styles.widgetInfo}>
             <p>
-              <strong>Заголовок:</strong> {selectedWidget.title}
+              <strong>{t("addWidgetModal.widgetInfo.title")}</strong>{" "}
+              {selectedWidget.title}
             </p>
             <p>
-              <strong>Метрика:</strong>{" "}
+              <strong>{t("addWidgetModal.widgetInfo.metric")}</strong>{" "}
               {selectedWidget.key.charAt(0).toUpperCase() +
                 selectedWidget.key.slice(1)}
             </p>
             <p>
-              <strong>Тип графика:</strong>{" "}
+              <strong>{t("addWidgetModal.widgetInfo.chartType")}</strong>{" "}
               {selectedWidget.type.charAt(0).toUpperCase() +
                 selectedWidget.type.slice(1)}
             </p>
@@ -99,7 +102,7 @@ const AddWidgetModal: React.FC<AddWidgetModalProps> = ({
           onClick={handleAddWidget}
           disabled={!selectedWidgetId}
         >
-          Добавить график
+          {t("addWidgetModal.addChartButton")}
         </Button>
       </div>
     </div>

@@ -3,6 +3,7 @@ import styles from "./LanguageDropdown.module.scss";
 import ruFlag from "../assets/ru-flag.svg";
 import enFlag from "../assets/en-flag.svg";
 import arrowDownIcon from "../assets/arrow-down.svg";
+import { useTranslation } from "react-i18next";
 
 interface Language {
   code: string;
@@ -16,8 +17,11 @@ const languages: Language[] = [
 
 const LanguageDropdown: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>(
+    languages.find((lang) => lang.code === "RU") || languages[0]
+  );
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { i18n } = useTranslation();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -32,6 +36,15 @@ const LanguageDropdown: React.FC = () => {
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
+
+    const currentLanguageCode = i18n.language.toUpperCase();
+    const initialLanguage = languages.find(
+      (lang) => lang.code === currentLanguageCode
+    );
+    if (initialLanguage) {
+      setSelectedLanguage(initialLanguage);
+    }
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -40,6 +53,7 @@ const LanguageDropdown: React.FC = () => {
   const handleLanguageSelect = (language: Language) => {
     setSelectedLanguage(language);
     setIsOpen(false);
+    i18n.changeLanguage(language.code.toLowerCase());
   };
 
   return (

@@ -1,9 +1,23 @@
 {
-  "welcome": "Welcome!",
-  "registration": "Registration",
-  "login": "Login",
-  "password": "Password",
-  "register": "Register",
-  "orLoginWith": "Or log in with",
-  "language": "Language"
+  "common": {
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "backToOverview": "Back to Overview",
+    "backToHome": "Back to Home"
+  },
+  "errors": {
+    "400": "Bad request. Please try again.",
+    "401": "Unauthorized access. Please log in.",
+    "403": "Access denied. You do not have permission to view this page.",
+    "404": "Page not found.",
+    "500": "Internal server error. Please try later.",
+    "502": "Bad gateway. Please try later.",
+    "503": "Service unavailable. Please try later.",
+    "504": "Gateway timeout. Please try later.",
+    "default": "An unknown error occurred."
+  },
+  "projects": {
+    "projectA": "Project A",
+    "projectB": "Project B"
+  }
 }

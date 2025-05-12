@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styles from "./CreateProjectPage.module.scss";
 import { useNavigate } from "react-router-dom";
-import Input from "../shared/components/Input/Input";
-import Button from "../shared/components/Button/Button";
-import Select from "../shared/components/Select";
+import Input from "../../../shared/components/Input/Input";
+import Button from "../../../shared/components/Button/Button";
+import Select from "../../../shared/components/Select";
+import { useTranslation } from "react-i18next";
 
 const CreateProjectPage: React.FC = () => {
   const [step, setStep] = useState(1);
@@ -13,11 +14,12 @@ const CreateProjectPage: React.FC = () => {
   const [apiKey, setApiKey] = useState("");
 
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const platforms = [
-    { value: "App Store", label: "App Store" },
-    { value: "Google Play", label: "Google Play" },
-    { value: "RuStore", label: "RuStore" },
+    { value: "App Store", label: t("createProject.platform.AppStore") },
+    { value: "Google Play", label: t("createProject.platform.GooglePlay") },
+    { value: "RuStore", label: t("createProject.platform.RuStore") },
   ];
 
   const handleContinue = async () => {
@@ -41,25 +43,25 @@ const CreateProjectPage: React.FC = () => {
       <div className={styles.formWrapper}>
         {step === 1 && (
           <div className={styles.form}>
-            <h2>Добавление нового проекта</h2>
+            <h2>{t("createProject.title")}</h2>
 
             <Select
               options={platforms}
               value={platform}
               onChange={setPlatform}
-              placeholder="Выберите платформу"
+              placeholderKey={t("createProject.platformPlaceholder")}
             />
 
             <Input
               type="text"
-              placeholder="Ссылка на проект"
+              placeholder={t("createProject.projectLinkPlaceholder")}
               value={projectLink}
               onChange={(value) => setProjectLink(value)}
             />
 
             <Input
               type="text"
-              placeholder="Название приложения"
+              placeholder={t("createProject.appNamePlaceholder")}
               value={appName}
               onChange={(value) => setAppName(value)}
             />
@@ -70,10 +72,10 @@ const CreateProjectPage: React.FC = () => {
                 size="medium"
                 onClick={handleBackToOverview}
               >
-                Отмена
+                {t("common.cancel")}
               </Button>
               <Button variant="primary" size="medium" onClick={handleContinue}>
-                Продолжить
+                {t("common.continue")}
               </Button>
             </div>
           </div>
@@ -81,18 +83,15 @@ const CreateProjectPage: React.FC = () => {
 
         {step === 2 && (
           <div className={styles.apiKeyCard}>
-            <h2>Почти готово</h2>
+            <h2>{t("createProject.apiKeyTitle")}</h2>
             <div className={styles.spanContainer}>
-              <div>
-                Чтобы начать пользоваться аналитикой, интегрируйте SDK Best
-                Analytics в приложение.
-              </div>
-              <div>Ваш API ключ:</div>
+              <div>{t("createProject.apiKeyMessage")}</div>
+              <div>{t("createProject.apiKeyLabel")}</div>
             </div>
             <div className={styles.apiKey}>
               <span>{apiKey}</span>
               <Button variant="secondary" size="small" onClick={handleCopy}>
-                Скопировать
+                {t("createProject.copyButton")}
               </Button>
             </div>
             <Button
@@ -100,7 +99,7 @@ const CreateProjectPage: React.FC = () => {
               size="small"
               onClick={handleBackToOverview}
             >
-              К обзору
+              {t("common.backToOverview")}
             </Button>
           </div>
         )}

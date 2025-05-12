@@ -60,7 +60,7 @@ export default fetchFakeApi;
 
 const fakeApi: ProjectData[] = [
   {
-    name: "Проект A",
+    name: "projectA",
     data: [
       {
         period: "01.04",
@@ -702,7 +702,7 @@ const fakeApi: ProjectData[] = [
     ],
   },
   {
-    name: "Проект B",
+    name: "projectB",
     data: [
       {
         period: "01.04",

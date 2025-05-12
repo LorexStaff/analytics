@@ -1,0 +1,8 @@
+{
+  "errorPage": {
+    "title": "Ошибка {{code}}",
+    "defaultTitle": "Произошла ошибка",
+    "message": "Попробуйте перезагрузить страницу или вернуться позже.",
+    "customMessage": "{{message}}"
+  }
+}

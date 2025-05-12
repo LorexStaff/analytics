@@ -1,0 +1,23 @@
+{
+  "auth": {
+    "welcome": "Welcome!",
+    "login": "Login",
+    "register": "Register",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "forgotPassword": "Forgot password?",
+    "recoverPassword": "Recover",
+    "rememberMe": "Remember me",
+    "orText": "Or sign in with",
+    "switchToLogin": "Log in",
+    "switchToRegister": "Sign up",
+    "validation": {
+      "emailInvalidFormat": "Invalid email format",
+      "emailRequired": "Email is required",
+      "passwordMinLength": "Password must contain at least {min} characters",
+      "passwordDigitRequired": "Password must contain at least one digit",
+      "passwordSpecialCharRequired": "Password must contain at least one special character",
+      "passwordRequired": "Password is required"
+    }
+  }
+}

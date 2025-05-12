@@ -9,6 +9,7 @@ import saveIcon from "../assets/save-icon.svg";
 import saveGreenIcon from "../assets/save-icon-green.svg";
 import Select from "../../../shared/components/Select";
 import Button from "../../../shared/components/Button/Button";
+import { useTranslation } from "react-i18next";
 
 const ReportsPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -23,6 +24,7 @@ const ReportsPage: React.FC = () => {
     "none"
   );
   const [isSaved, setIsSaved] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +48,9 @@ const ReportsPage: React.FC = () => {
       title: `${
         widgetType.charAt(0).toUpperCase() + widgetType.slice(1)
       } для ${selectedMetric} (${
-        grouping === "none" ? "без группировки" : grouping
+        grouping === "none"
+          ? t("reportsPage.none")
+          : t(`reportsPage.${grouping}`)
       })`,
     };
     dispatch(addWidget(widgetData));
@@ -58,16 +62,21 @@ const ReportsPage: React.FC = () => {
 
   return (
     <div className={styles.reportsPage}>
-      <h1>Создание отчета</h1>
+      <h1>{t("reportsPage.title")}</h1>
       <div className={styles.horizontalDropdowns}>
         <div className={styles.dropdownContainer}>
-          <label htmlFor="metric-select">Выберите метрику:</label>
+          <label htmlFor="metric-select">
+            {t("reportsPage.selectMetric")}:
+          </label>
           <Select
             options={[
-              { value: "newUsers", label: "Новые пользователи" },
-              { value: "activeUsers", label: "Активные пользователи" },
-              { value: "revenueGrowth", label: "Прирост прибыли" },
-              { value: "arpu", label: "ARPU" },
+              { value: "newUsers", label: t("projectTable.newUsers") },
+              { value: "activeUsers", label: t("projectTable.activeUsers") },
+              {
+                value: "revenueGrowth",
+                label: t("projectTable.revenueGrowth"),
+              },
+              { value: "arpu", label: t("projectTable.arpu") },
             ]}
             value={selectedMetric}
             onChange={(value) =>
@@ -75,20 +84,22 @@ const ReportsPage: React.FC = () => {
                 value as keyof Omit<ProjectData["data"][0], "period">
               )
             }
-            placeholder="Выберите метрику"
+            placeholderKey="reportsPage.selectMetric"
           />
         </div>
 
         <div className={styles.dropdownContainer}>
-          <label htmlFor="type-select">Выберите тип виджета:</label>
+          <label htmlFor="type-select">
+            {t("reportsPage.selectWidgetType")}:
+          </label>
           <Select
             options={[
-              { value: "table", label: "Таблица" },
-              { value: "chart", label: "График" },
-              { value: "barchart", label: "Столбчатая диаграмма" },
-              { value: "piechart", label: "Круговая диаграмма" },
-              { value: "area", label: "Area Chart" },
-              { value: "number", label: "Число" },
+              { value: "table", label: t("widget.table") },
+              { value: "chart", label: t("widget.chart") },
+              { value: "barchart", label: t("widget.barchart") },
+              { value: "piechart", label: t("widget.piechart") },
+              { value: "area", label: t("widget.area") },
+              { value: "number", label: t("widget.number") },
             ]}
             value={widgetType}
             onChange={(value) =>
@@ -102,23 +113,25 @@ const ReportsPage: React.FC = () => {
                   | "number"
               )
             }
-            placeholder="Выберите тип виджета"
+            placeholderKey="reportsPage.selectWidgetType"
           />
         </div>
 
         <div className={styles.dropdownContainer}>
-          <label htmlFor="grouping-select">Выберите группировку:</label>
+          <label htmlFor="grouping-select">
+            {t("reportsPage.selectGrouping")}:
+          </label>
           <Select
             options={[
-              { value: "none", label: "Без группировки" },
-              { value: "country", label: "По странам" },
-              { value: "gender", label: "По полу" },
+              { value: "none", label: t("reportsPage.none") },
+              { value: "country", label: t("reportsPage.country") },
+              { value: "gender", label: t("reportsPage.gender") },
             ]}
             value={grouping}
             onChange={(value) =>
               setGrouping(value as "country" | "gender" | "none")
             }
-            placeholder="Выберите группировку"
+            placeholderKey="reportsPage.selectGrouping"
           />
         </div>
 
@@ -128,7 +141,7 @@ const ReportsPage: React.FC = () => {
           onClick={handleSaveWidget}
           className={styles.saveButton}
         >
-          Сохранить виджет
+          {t("reportsPage.saveWidget")}
           <img
             src={isSaved ? saveGreenIcon : saveIcon}
             alt="Save Icon"
@@ -140,7 +153,7 @@ const ReportsPage: React.FC = () => {
       <div className={styles.widgetWrapper}>
         <div className={styles.widgetPreview}>
           {loading ? (
-            <p>Загрузка данных...</p>
+            <p>{t("reportsPage.loadingData")}</p>
           ) : (
             <Widget
               type={widgetType}

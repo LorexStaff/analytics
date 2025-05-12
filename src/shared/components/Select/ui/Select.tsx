@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Select.module.scss";
 import arrowIcon from "../assets/dropdown-vector.svg";
+import { useTranslation } from "react-i18next";
 
 interface Option {
   value: string;
@@ -11,15 +12,17 @@ interface SelectProps {
   options: Option[];
   value: string;
   onChange: (value: string) => void;
-  placeholder?: string;
+  placeholderKey?: string;
 }
 
 const Select: React.FC<SelectProps> = ({
   options,
   value,
   onChange,
-  placeholder = "Выберите опцию",
+  placeholderKey = "select.placeholder",
 }) => {
+  const { t } = useTranslation();
+
   return (
     <select
       className={styles.select}
@@ -29,11 +32,10 @@ const Select: React.FC<SelectProps> = ({
         backgroundImage: `url(${arrowIcon})`,
       }}
     >
-      {placeholder && (
-        <option value="" disabled hidden>
-          {placeholder}
-        </option>
-      )}
+      <option value="" disabled hidden>
+        {t(placeholderKey)}
+      </option>
+
       {options.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}

@@ -1,0 +1,12 @@
+{
+  "addWidgetModal": {
+    "title": "Добавить график",
+    "selectWidget": "Выберите виджет",
+    "widgetInfo": {
+      "title": "Заголовок:",
+      "metric": "Метрика:",
+      "chartType": "Тип графика:"
+    },
+    "addChartButton": "Добавить график"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "sidebar": {
+    "overview": "Overview",
+    "reports": "Reports",
+    "monetization": "Monetization",
+    "engagement": "Engagement",
+    "productivity": "Productivity",
+    "vr": "VR",
+    "example1": "Example 1",
+    "example2": "Example 2",
+    "collapse": "Collapse",
+    "logout": "Logout"
+  }
+}

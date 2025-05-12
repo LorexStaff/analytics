@@ -1,0 +1,14 @@
+{
+  "sidebar": {
+    "overview": "Обзор",
+    "reports": "Отчеты",
+    "monetization": "Монетизация",
+    "engagement": "Вовлеченность",
+    "productivity": "Производительность",
+    "vr": "VR",
+    "example1": "Пример 1",
+    "example2": "Пример 2",
+    "collapse": "Свернуть",
+    "logout": "Выход"
+  }
+}

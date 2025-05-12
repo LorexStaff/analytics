@@ -6,10 +6,11 @@ import monetizationIcon from "../assets/monetization-icon.svg";
 import engagementIcon from "../assets/engagement-icon.svg";
 import productivityIcon from "../assets/productivity-icon.svg";
 import vrIcon from "../assets/vr-icon.svg";
-import overviewnIcon from "../assets/overview-icon.svg";
+import overviewIcon from "../assets/overview-icon.svg";
 import logoutIcon from "../assets/logout-icon.svg";
 import collapseIcon from "../assets/chevron-left.svg";
 import reportsIcon from "../assets/reports-icon.svg";
+import { useTranslation } from "react-i18next";
 
 const Sidebar: React.FC = () => {
   const { isExpanded, toggleMenu } = useSidebar();
@@ -18,6 +19,7 @@ const Sidebar: React.FC = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
   const [isCollapseIconRotated, setIsCollapseIconRotated] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const toggleSubMenu = (itemKey: string) => {
     setExpandedItems((prev) =>
@@ -40,48 +42,48 @@ const Sidebar: React.FC = () => {
   const menuItems = [
     {
       to: "/",
-      label: "Обзор",
-      icon: overviewnIcon,
+      labelKey: "sidebar.overview",
+      icon: overviewIcon,
     },
     {
       to: "/reports",
-      label: "Отчеты",
+      labelKey: "sidebar.reports",
       icon: reportsIcon,
     },
     {
       to: "/monetization",
-      label: "Монетизация",
+      labelKey: "sidebar.monetization",
       icon: monetizationIcon,
       subMenu: [
-        { to: "/monetization/example1", label: "Example 1" },
-        { to: "/monetization/example2", label: "Example 2" },
+        { to: "/monetization/example1", labelKey: "sidebar.example1" },
+        { to: "/monetization/example2", labelKey: "sidebar.example2" },
       ],
     },
     {
       to: "/engagement",
-      label: "Вовлеченность",
+      labelKey: "sidebar.engagement",
       icon: engagementIcon,
       subMenu: [
-        { to: "/engagement/example1", label: "Example 1" },
-        { to: "/engagement/example2", label: "Example 2" },
+        { to: "/engagement/example1", labelKey: "sidebar.example1" },
+        { to: "/engagement/example2", labelKey: "sidebar.example2" },
       ],
     },
     {
       to: "/productivity",
-      label: "Производительность",
+      labelKey: "sidebar.productivity",
       icon: productivityIcon,
       subMenu: [
-        { to: "/productivity/example1", label: "Example 1" },
-        { to: "/productivity/example2", label: "Example 2" },
+        { to: "/productivity/example1", labelKey: "sidebar.example1" },
+        { to: "/productivity/example2", labelKey: "sidebar.example2" },
       ],
     },
     {
       to: "/vr",
-      label: "VR",
+      labelKey: "sidebar.vr",
       icon: vrIcon,
       subMenu: [
-        { to: "/vr/example1", label: "Example 1" },
-        { to: "/vr/example2", label: "Example 2" },
+        { to: "/vr/example1", labelKey: "sidebar.example1" },
+        { to: "/vr/example2", labelKey: "sidebar.example2" },
       ],
     },
   ];
@@ -117,10 +119,10 @@ const Sidebar: React.FC = () => {
               >
                 <img
                   src={item.icon}
-                  alt={`${item.label} icon`}
+                  alt={`${t(item.labelKey)} icon`}
                   className={styles.icon}
                 />
-                {isExpanded && item.label}
+                {isExpanded && t(item.labelKey)}
                 {isExpanded ? (
                   <span className={styles.arrow}>
                     {item.subMenu &&
@@ -149,7 +151,7 @@ const Sidebar: React.FC = () => {
                           : ""
                       }
                     >
-                      {subItem.label}
+                      {t(subItem.labelKey)}
                     </Link>
                   ))}
                 </div>
@@ -168,7 +170,7 @@ const Sidebar: React.FC = () => {
                             : ""
                         }
                       >
-                        {subItem.label}
+                        {t(subItem.labelKey)}
                       </Link>
                     ))}
                   </div>
@@ -188,7 +190,7 @@ const Sidebar: React.FC = () => {
                   isCollapseIconRotated ? styles.rotated : ""
                 }`}
               />
-              {isExpanded && "Свернуть"}
+              {isExpanded && t("sidebar.collapse")}
             </button>
           </div>
 
@@ -199,7 +201,7 @@ const Sidebar: React.FC = () => {
                 alt="Logout icon"
                 className={styles.logoutIcon}
               />
-              {isExpanded && "Выход"}
+              {isExpanded && t("sidebar.logout")}
             </button>
           </div>
         </div>

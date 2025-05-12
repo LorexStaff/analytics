@@ -10,8 +10,9 @@ import Engagement from "../../pages/Engagement";
 import Productivity from "../../pages/Productivity";
 import VR from "../../pages/VR";
 import ProtectedRoute from "../providers/ProtectedRoute";
-import CreateProjectPage from "../../pages/CreateProjectPage";
-import ErrorPage from "../../pages/ErrorPage";
+import CreateProjectPage from "../../pages/CreateProject";
+import ErrorPage from "../../pages/Error/ui/ErrorPage";
+import { useTranslation } from "react-i18next";
 
 const AppRouter: React.FC = () => {
   return (
@@ -36,33 +37,13 @@ const AppRouter: React.FC = () => {
   );
 };
 
-const getErrorMessage = (code: number): string => {
-  switch (code) {
-    case 400:
-      return "Неверный запрос. Попробуйте снова.";
-    case 401:
-      return "Неавторизованный доступ. Пожалуйста, войдите в систему.";
-    case 403:
-      return "Доступ запрещён. У вас нет прав для просмотра этой страницы.";
-    case 404:
-      return "Страница не найдена.";
-    case 500:
-      return "Внутренняя ошибка сервера. Попробуйте позже.";
-    case 502:
-      return "Неверный шлюз. Попробуйте позже.";
-    case 503:
-      return "Сервис недоступен. Попробуйте позже.";
-    case 504:
-      return "Таймаут шлюза. Попробуйте позже.";
-    default:
-      return "Произошла неизвестная ошибка.";
-  }
-};
-
 const ErrorPageWrapper: React.FC = () => {
   const { code } = useParams<{ code: string }>();
   const errorCode = Number(code) || 500;
-  const errorMessage = getErrorMessage(errorCode);
+  const { t } = useTranslation();
+  const errorMessage = t(`errors.${errorCode}`, {
+    defaultValue: t("errors.default"),
+  });
 
   return <ErrorPage errorCode={errorCode} errorMessage={errorMessage} />;
 };
