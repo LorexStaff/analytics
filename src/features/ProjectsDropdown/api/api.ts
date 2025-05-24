@@ -8,9 +8,9 @@ export const getProjects = async (): Promise<Project[]> => {
     setTimeout(
       () =>
         resolve([
-          { id: 1, nameKey: "project.project1" },
-          { id: 2, nameKey: "project.project2" },
-          { id: 3, nameKey: "project.project3" },
+          { id: 1, nameKey: "project.projectA" },
+          { id: 2, nameKey: "project.projectB" },
+          { id: 3, nameKey: "project.all_projects" },
         ]),
       1000
     )

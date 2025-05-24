@@ -1,8 +1,8 @@
 {
   "project": {
-    "project1": "Проект 1",
-    "project2": "Проект 2",
-    "project3": "Проект 3"
+    "projectA": "Проект A",
+    "projectB": "Проект B",
+    "all_projects": "Все проекты"
   },
   "dropdown": {
     "noProjects": "Нет проектов",
