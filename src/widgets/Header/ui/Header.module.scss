@@ -47,6 +47,12 @@
   }
 }
 
+.logoAndDropdown {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
 .rightSection {
   display: flex;
   align-items: center;

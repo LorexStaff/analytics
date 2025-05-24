@@ -5,7 +5,7 @@ import {
   useSidebar,
 } from "./shared/components/Sidebar/SidebarContext";
 import { BrowserRouter as Router, useLocation } from "react-router-dom";
-import Header from "./shared/components/Header";
+import Header from "./widgets/Header";
 import Footer from "./widgets/Footer";
 import styles from "./shared/components/styles/global.module.scss";
 import AppRouter from "./app/router/AppRouter";
