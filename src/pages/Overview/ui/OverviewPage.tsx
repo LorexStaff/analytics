@@ -22,6 +22,7 @@ import ProjectTable from "../../../widgets/ProjectTable/ui/ProjectTable";
 import AddWidgetModal from "../../../features/AddWidgetModal/ui/AddWidgetModal";
 import plusIcon from "../assets/plus-icon.svg";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 ChartJS.register(
   CategoryScale,
@@ -36,6 +37,13 @@ ChartJS.register(
 interface WidgetInterface {
   id: string;
   type: "chart" | "table" | "barchart" | "piechart" | "area" | "number";
+  title: string;
+  key: keyof Omit<ProjectData["data"][0], "period">;
+}
+
+interface FixedWidget {
+  id: string;
+  type: "chart" | "area";
   title: string;
   key: keyof Omit<ProjectData["data"][0], "period">;
 }
@@ -65,6 +73,9 @@ const OverviewPage: React.FC = () => {
     null,
     null,
   ]);
+  const selectedProject = useSelector(
+    (state: any) => state.project.selectedProject
+  );
 
   const mappedSavedWidgets = savedWidgets.map((widget) => ({
     id: widget.id,
@@ -89,7 +100,6 @@ const OverviewPage: React.FC = () => {
         });
       }
     };
-
     fetchData();
   }, [navigate]);
 
@@ -117,27 +127,21 @@ const OverviewPage: React.FC = () => {
     dateRange?: [Date | null, Date | null]
   ): ProjectData[] => {
     if (!data.length) return [];
-
     const today = new Date("2025-06-30");
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
-
     const weekAgo = new Date(today);
     weekAgo.setDate(today.getDate() - 7);
-
     const monthStart = new Date(today);
     monthStart.setDate(1);
-
     const quarterStart = new Date(today);
     quarterStart.setMonth(today.getMonth() - 3);
     const formatDate = (date: Date): string =>
       `${String(date.getDate()).padStart(2, "0")}.${String(
         date.getMonth() + 1
       ).padStart(2, "0")}`;
-
     const parseDate = (period: string): Date =>
       new Date(`2025-${period.split(".").reverse().join("-")}`);
-
     switch (period) {
       case "today":
         const todayFormatted = formatDate(today);
@@ -183,10 +187,8 @@ const OverviewPage: React.FC = () => {
       case "range":
         const [startDate, endDate] = dateRange || [null, null];
         if (!startDate || !endDate) return data;
-
         const startFormatted = formatDate(startDate);
         const endFormatted = formatDate(endDate);
-
         return data.map((project) => ({
           ...project,
           data: project.data.filter((item) => {
@@ -216,30 +218,25 @@ const OverviewPage: React.FC = () => {
     if (sortConfig?.key === key && sortConfig.direction === "asc") {
       direction = "desc";
     }
-
     const sorted = [...filteredProjects].sort((a, b) => {
       const lastMonthA = a.data[a.data.length - 1];
       const lastMonthB = b.data[b.data.length - 1];
-
       if (key === "name") {
         return direction === "asc"
           ? a.name.localeCompare(b.name)
           : b.name.localeCompare(a.name);
       }
-
       if (lastMonthA[key] < lastMonthB[key])
         return direction === "asc" ? -1 : 1;
       if (lastMonthA[key] > lastMonthB[key])
         return direction === "asc" ? 1 : -1;
       return 0;
     });
-
     setSortedProjects(sorted);
     setSortConfig({ key, direction });
   };
 
   const periods = filteredProjects[0]?.data.map((item) => item.period) || [];
-
   const chartColors = [
     {
       borderColor: "rgba(255, 99, 132, 1)",
@@ -251,37 +248,64 @@ const OverviewPage: React.FC = () => {
     },
   ];
 
-  const createChartData = (
-    key: keyof Omit<(typeof projects)[0]["data"][0], "period">,
+  const createFixedChartData = (
+    key: keyof Omit<ProjectData["data"][0], "period">,
     type: WidgetInterface["type"]
   ) => {
     const labels = periods;
+
+    const selectedProjectsData = sortedProjects.filter((project) =>
+      selectedProjects.includes(project.name)
+    );
+
+    const datasets = selectedProjectsData.map((project, index) => {
+      const colorIndex = index % chartColors.length;
+      return {
+        label: t(`projects.${project.name}`),
+        data: project.data.map((item) => item[key]),
+        borderColor: chartColors[colorIndex].borderColor,
+        backgroundColor: chartColors[colorIndex].backgroundColor,
+        fill: type === "area",
+      };
+    });
+
+    return { labels, datasets };
+  };
+
+  const createNonFixedChartData = (
+    key: keyof Omit<ProjectData["data"][0], "period">,
+    type: WidgetInterface["type"]
+  ) => {
+    const labels = periods;
+
+    const selectedProjectData = sortedProjects.find(
+      (project) => `project.${project.name}` === selectedProject
+    );
+
+    if (!selectedProjectData) {
+      return { labels: [], datasets: [] };
+    }
 
     const datasets =
       type === "piechart"
         ? [
             {
               label: "Общие данные",
-              data: sortedProjects
-                .filter((project) => selectedProjects.includes(project.name))
-                .flatMap((project) => project.data.map((item) => item[key])),
+              data: selectedProjectData.data.map((item) => item[key]),
               backgroundColor: chartColors.map(
                 (color) => color.backgroundColor
               ),
             },
           ]
-        : sortedProjects
-            .filter((project) => selectedProjects.includes(project.name))
-            .map((project, index) => {
-              const colorIndex = index % chartColors.length;
-              return {
-                label: t(`projects.${project.name}`),
-                data: project.data.map((item) => item[key]),
-                borderColor: chartColors[colorIndex].borderColor,
-                backgroundColor: chartColors[colorIndex].backgroundColor,
-                fill: type === "area",
-              };
-            });
+        : [
+            {
+              label: t(`projects.${selectedProjectData.name}`),
+              data: selectedProjectData.data.map((item) => item[key]),
+              borderColor: chartColors[0].borderColor,
+              backgroundColor: chartColors[0].backgroundColor,
+              fill: type === "area",
+            },
+          ];
 
     return { labels, datasets };
   };
@@ -292,14 +316,12 @@ const OverviewPage: React.FC = () => {
     type: WidgetInterface["type"]
   ) => {
     if (!title || !key) return;
-
     const newWidget: WidgetInterface = {
       id: `widget-${Date.now()}`,
       type,
       title,
       key,
     };
-
     setWidgets((prev) => [...prev, newWidget]);
     setIsModalOpen(false);
   };
@@ -318,7 +340,6 @@ const OverviewPage: React.FC = () => {
   ) => {
     event.preventDefault();
     if (draggedIndex === null || draggedIndex === index) return;
-
     const newWidgets = [...widgets];
     const [draggedWidget] = newWidgets.splice(draggedIndex, 1);
     newWidgets.splice(index, 0, draggedWidget);
@@ -326,9 +347,24 @@ const OverviewPage: React.FC = () => {
     setDraggedIndex(index);
   };
 
-  useEffect(() => {
-    setSortedProjects(filteredProjects);
-  }, [period, dateRange, filteredProjects]);
+  const [fixedWidgets, setFixedWidgets] = useState<FixedWidget[]>([
+    {
+      id: "fixed-arpu",
+      type: "chart",
+      title: t("overview.arpu"),
+      key: "arpu",
+    },
+    {
+      id: "fixed-new-users",
+      type: "area",
+      title: t("overview.newUsers"),
+      key: "newUsers",
+    },
+  ]);
+
+  const handleExpandToggle = (index: number) => {
+    setExpandedGraphIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
 
   return (
     <div>
@@ -367,17 +403,19 @@ const OverviewPage: React.FC = () => {
           )}
         </div>
 
-        <div className={styles.rightAlignedButton}>
-          <Button
-            variant="primary"
-            size="medium"
-            className={styles.addButton}
-            onClick={() => setIsModalOpen(true)}
-          >
-            {t("overview.addWidget")}
-            <img src={plusIcon} alt="plus" className={styles.icon}></img>
-          </Button>
-        </div>
+        {selectedProject !== "project.all_projects" && (
+          <div className={styles.rightAlignedButton}>
+            <Button
+              variant="primary"
+              size="medium"
+              className={styles.addButton}
+              onClick={() => setIsModalOpen(true)}
+            >
+              {t("overview.addWidget")}
+              <img src={plusIcon} alt="plus" className={styles.icon}></img>
+            </Button>
+          </div>
+        )}
       </div>
 
       <AddWidgetModal
@@ -392,53 +430,88 @@ const OverviewPage: React.FC = () => {
           <p>{t("overview.loadingData")}</p>
         ) : (
           <>
-            <div className={styles.widget}>
-              <ProjectTable
-                projects={sortedProjects}
-                selectedProjects={selectedProjects}
-                onCheckboxChange={handleCheckboxChange}
-                onMasterCheckboxChange={handleMasterCheckboxChange}
-                onSort={handleSort}
-              />
-            </div>
-
-            {widgets.length > 0 && (
-              <div
-                className={styles.graphsContainer}
-                style={{ display: "flex", flexWrap: "wrap" }}
-              >
-                {widgets.map((widget, index) => {
-                  const chartData = createChartData(widget.key, widget.type);
-                  return (
-                    <Widget
-                      key={widget.id}
-                      id={widget.id}
-                      type={widget.type}
-                      title={widget.title}
-                      chartData={chartData}
-                      isExpanded={expandedGraphIndex === index}
-                      isDragging={draggedIndex === index}
-                      onExpandToggle={() =>
-                        setExpandedGraphIndex(
-                          expandedGraphIndex === index ? null : index
-                        )
-                      }
-                      onRemove={() => handleRemoveWidget(widget.id)}
-                      onDragStart={() => handleDragStart(index)}
-                      onDragOver={(e) => handleDragOver(e, index)}
-                    />
-                  );
-                })}
-              </div>
+            {selectedProject === "project.all_projects" && (
+              <>
+                <div className={styles.widget}>
+                  <ProjectTable
+                    projects={sortedProjects}
+                    selectedProjects={selectedProjects}
+                    onCheckboxChange={handleCheckboxChange}
+                    onMasterCheckboxChange={handleMasterCheckboxChange}
+                    onSort={handleSort}
+                  />
+                </div>
+                <div
+                  className={styles.graphsContainer}
+                  style={{ display: "flex", flexWrap: "wrap" }}
+                >
+                  {fixedWidgets.map((widget, index) => {
+                    const chartData = createFixedChartData(
+                      widget.key,
+                      widget.type
+                    );
+                    return (
+                      <Widget
+                        key={widget.id}
+                        id={widget.id}
+                        type={widget.type}
+                        title={widget.title}
+                        chartData={chartData}
+                        selectedProject={selectedProject}
+                        isExpanded={expandedGraphIndex === index}
+                        isDragging={draggedIndex === index}
+                        onExpandToggle={() => handleExpandToggle(index)}
+                        onRemove={() => {}}
+                        onDragStart={() => handleDragStart(index)}
+                        onDragOver={(e) => handleDragOver(e, index)}
+                      />
+                    );
+                  })}
+                </div>
+              </>
             )}
 
-            {widgets.length === 0 && (
-              <div className={styles.noDataMessage}>
-                <p>
+            {selectedProject !== "project.all_projects" &&
+              widgets.length > 0 && (
+                <div
+                  className={styles.graphsContainer}
+                  style={{ display: "flex", flexWrap: "wrap" }}
+                >
+                  {widgets.map((widget, index) => {
+                    const chartData = createNonFixedChartData(
+                      widget.key,
+                      widget.type
+                    );
+                    return (
+                      <Widget
+                        key={widget.id}
+                        id={widget.id}
+                        type={widget.type}
+                        title={widget.title}
+                        chartData={chartData}
+                        selectedProject={selectedProject}
+                        isExpanded={expandedGraphIndex === index}
+                        isDragging={draggedIndex === index}
+                        onExpandToggle={() =>
+                          setExpandedGraphIndex(
+                            expandedGraphIndex === index ? null : index
+                          )
+                        }
+                        onRemove={() => handleRemoveWidget(widget.id)}
+                        onDragStart={() => handleDragStart(index)}
+                        onDragOver={(e) => handleDragOver(e, index)}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+
+            {selectedProject !== "project.all_projects" &&
+              widgets.length === 0 && (
+                <div className={styles.noDataMessage}>
                   <p>{t("overview.noWidgets")}</p>
-                </p>
-              </div>
-            )}
+                </div>
+              )}
           </>
         )}
       </div>

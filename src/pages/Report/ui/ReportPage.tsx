@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "./ReportsPage.module.scss";
 import { useAppDispatch } from "../../../app/hooks";
 import { addWidget } from "../../../features/ReportBuilder/model/slice";
@@ -25,7 +25,11 @@ const ReportsPage: React.FC = () => {
   );
   const [isSaved, setIsSaved] = useState(false);
   const { t } = useTranslation();
-
+  useEffect(() => {
+    if (widgetType === "piechart") {
+      setGrouping("country");
+    }
+  }, [widgetType]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,6 +63,20 @@ const ReportsPage: React.FC = () => {
       setIsSaved(false);
     }, 1500);
   };
+
+  const groupingOptions = useMemo(() => {
+    if (widgetType === "piechart") {
+      return [
+        { value: "country", label: t("reportsPage.country") },
+        { value: "gender", label: t("reportsPage.gender") },
+      ];
+    }
+    return [
+      { value: "none", label: t("reportsPage.none") },
+      { value: "country", label: t("reportsPage.country") },
+      { value: "gender", label: t("reportsPage.gender") },
+    ];
+  }, [widgetType, t]);
 
   return (
     <div className={styles.reportsPage}>
@@ -122,11 +140,7 @@ const ReportsPage: React.FC = () => {
             {t("reportsPage.selectGrouping")}:
           </label>
           <Select
-            options={[
-              { value: "none", label: t("reportsPage.none") },
-              { value: "country", label: t("reportsPage.country") },
-              { value: "gender", label: t("reportsPage.gender") },
-            ]}
+            options={groupingOptions}
             value={grouping}
             onChange={(value) =>
               setGrouping(value as "country" | "gender" | "none")

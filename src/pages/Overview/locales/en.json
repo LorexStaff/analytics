@@ -5,6 +5,8 @@
     "addWidget": "Add widget",
     "loadingData": "Loading data...",
     "noWidgets": "No selected widgets. Add widgets using the button above.",
+    "newUsers": "New users",
+    "arpu": "ARPU",
     "periods": {
       "today": "Today",
       "yesterday": "Yesterday",
