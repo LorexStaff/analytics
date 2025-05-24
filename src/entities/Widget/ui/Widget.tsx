@@ -45,36 +45,63 @@ const Widget: React.FC<WidgetProps> = ({
 
   const createChartData = () => {
     const labels = projects[0]?.data.map((item) => item.period) || [];
-    const datasets = metrics.flatMap((metric, index) => {
-      const colors = [
-        {
-          borderColor: "rgba(75, 192, 192, 1)",
-          backgroundColor: "rgba(75, 192, 192, 0.2)",
-        },
-        {
-          borderColor: "rgba(255, 99, 132, 1)",
-          backgroundColor: "rgba(255, 99, 132, 0.2)",
-        },
-        {
-          borderColor: "rgba(54, 162, 235, 1)",
-          backgroundColor: "rgba(54, 162, 235, 0.2)",
-        },
-      ];
-      const colorIndex = index % colors.length;
 
-      return projects.map((project) => ({
-        label: `${project.name} - ${metric}`,
-        data: project.data.map((item) => item[metric]),
-        borderColor: colors[colorIndex].borderColor,
-        backgroundColor: colors[colorIndex].backgroundColor,
-        fill: type === "area",
-      }));
-    });
+    const colors = [
+      {
+        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: "rgba(75, 192, 192, 0.2)",
+      },
+      {
+        borderColor: "rgba(255, 99, 132, 1)",
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+      },
+      {
+        borderColor: "rgba(54, 162, 235, 1)",
+        backgroundColor: "rgba(54, 162, 235, 0.2)",
+      },
+      {
+        borderColor: "rgba(255, 159, 64, 1)",
+        backgroundColor: "rgba(255, 159, 64, 0.2)",
+      },
+      {
+        borderColor: "rgba(153, 102, 255, 1)",
+        backgroundColor: "rgba(153, 102, 255, 0.2)",
+      },
+    ];
+
+    const datasets = metrics.flatMap((metric) =>
+      projects.map((project, projectIndex) => {
+        const colorIndex = projectIndex % colors.length;
+        return {
+          label: `${project.name} - ${metric}`,
+          data: project.data.map((item) => item[metric]),
+          borderColor: colors[colorIndex].borderColor,
+          backgroundColor: colors[colorIndex].backgroundColor,
+          fill: type === "area",
+        };
+      })
+    );
 
     return { labels, datasets };
   };
-
   const chartData = createChartData();
+
+  const calculateNumberAndChange = (
+    projects: ProjectData[],
+    metric: keyof Omit<ProjectData["data"][0], "period">
+  ) => {
+    const data = projects[0]?.data;
+
+    if (!data || data.length < 2) {
+      return { current: 0, change: 0 };
+    }
+
+    const current = data[data.length - 1][metric];
+    const previous = data[data.length - 2][metric];
+    const change = previous !== 0 ? ((current - previous) / previous) * 100 : 0;
+
+    return { current, change };
+  };
 
   const renderContent = () => {
     switch (type) {
@@ -173,12 +200,22 @@ const Widget: React.FC<WidgetProps> = ({
         );
 
       case "number":
+        const metric = metrics[0];
+        const { current, change } = calculateNumberAndChange(projects, metric);
+
         return (
           <div className={styles.number}>
-            {t("widgetEntity.exampleNumber", { value: 123 })}
+            <div className={styles.currentValue}>{current}</div>
+            <div
+              className={`${styles.changeValue} ${
+                change >= 0 ? styles.positive : styles.negative
+              }`}
+            >
+              {change >= 0 ? "+" : ""}
+              {change.toFixed(2)}%
+            </div>
           </div>
         );
-
       default:
         return null;
     }

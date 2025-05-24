@@ -98,3 +98,28 @@
     background: #563da7;
   }
 }
+
+.number {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.currentValue {
+  margin-bottom: 8px;
+}
+
+.changeValue {
+  font-size: 24px;
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}
