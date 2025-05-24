@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./Dropdown.module.scss";
 import { getProjects } from "../api/api";
 import CheckmarkIcon from "../assets/Checkmark.svg";
 import ArrowDownIcon from "../assets/dropdown-vector.svg";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { setProjects, setSelectedProject } from "../model/slice";
 
 interface Project {
   id: number;
@@ -12,21 +14,26 @@ interface Project {
 }
 
 const Dropdown: React.FC = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
+  const dispatch = useDispatch();
+  const projects = useSelector((state: any) => state.project.projects || []);
+  const selectedProject = useSelector(
+    (state: any) => state.project.selectedProject
+  );
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   useEffect(() => {
     getProjects().then((data) => {
-      setProjects(data);
       if (data.length > 0) {
-        setSelectedProject(data[0]);
+        dispatch(setProjects(data));
+        if (!selectedProject) {
+          dispatch(setSelectedProject(data[0].nameKey));
+        }
       }
     });
-  }, []);
+  }, [dispatch, selectedProject]);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -47,7 +54,7 @@ const Dropdown: React.FC = () => {
   }, []);
 
   const handleProjectSelect = (project: Project) => {
-    setSelectedProject(project);
+    dispatch(setSelectedProject(project.nameKey));
     setIsOpen(false);
   };
 
@@ -59,9 +66,7 @@ const Dropdown: React.FC = () => {
     <div className={styles.dropdown} ref={dropdownRef}>
       <div className={styles.closed} onClick={toggleDropdown}>
         <span>
-          {selectedProject
-            ? t(selectedProject.nameKey)
-            : t("dropdown.noProjects")}{" "}
+          {selectedProject ? t(selectedProject) : t("dropdown.noProjects")}
         </span>
         <img
           src={ArrowDownIcon}
@@ -75,16 +80,16 @@ const Dropdown: React.FC = () => {
           {projects.length > 0 ? (
             <>
               <div className={styles.projectList}>
-                {projects.map((project) => (
+                {projects.map((project: Project) => (
                   <div
                     key={project.id}
                     className={`${styles.projectItem} ${
-                      selectedProject?.id === project.id ? styles.selected : ""
+                      selectedProject === project.nameKey ? styles.selected : ""
                     }`}
                     onClick={() => handleProjectSelect(project)}
                   >
                     {t(project.nameKey)}
-                    {selectedProject?.id === project.id && (
+                    {selectedProject === project.nameKey && (
                       <img
                         src={CheckmarkIcon}
                         alt="Checkmark"
@@ -98,7 +103,7 @@ const Dropdown: React.FC = () => {
               <div className={styles.divider}></div>
 
               <button className={styles.addButton} onClick={handleAddProject}>
-                <span>+</span> {t("dropdown.addProject")}{" "}
+                <span>+</span> {t("dropdown.addProject")}
               </button>
             </>
           ) : (
