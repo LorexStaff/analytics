@@ -25,6 +25,7 @@
   align-items: flex-start;
   justify-content: center;
   padding-left: 40px;
+  width: 800px;
 
   h1 {
     color: $secondary-main-color;
@@ -33,6 +34,11 @@
 
   @media (max-width: 992px) {
     display: none;
+  }
+
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    background-image: url("../../assets/auth-banner@2x.png");
+    background-size: cover;
   }
 }
 
