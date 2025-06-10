@@ -1,0 +1,19 @@
+{
+  "monetization": {
+    "title": "Монетизация",
+    "loading": "Загрузка данных...",
+    "selectPeriod": "Выберите период",
+    "customRange": "Свой диапазон",
+    "selectProjects": "Выберите проекты",
+    "noProjectsSelected": "Выберите проект в таблице для отображения данных.",
+    "noWidgetsAvailable": "Нет доступных виджетов для выбранных проектов.",
+    "arpuByCountry": "ARPU по странам для проекта A",
+    "purchasesInApp": "Покупки внутри приложения для проектов A и B",
+    "payingUsersPercentage": "Процент платящих пользователей для проекта A",
+    "totalArpu": "Общий ARPU для проектов A и B",
+    "purchasesByDevice": "Покупки внутри приложения по устройствам для проекта B",
+    "cumulativeTotalByTraffic": "Накопленный общий доход по источникам трафика для проекта A",
+    "inAppArpu": "ARPU внутри приложения для проектов A и B",
+    "cumulativeTotal": "Накопленный общий доход для проекта A"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "monetization": {
+    "title": "Monetization",
+    "loading": "Loading data...",
+    "selectPeriod": "Select period",
+    "customRange": "Custom range",
+    "selectProjects": "Select projects",
+    "noProjectsSelected": "Select a project in the table to display data.",
+    "noWidgetsAvailable": "No widgets available for the selected projects.",
+    "arpuByCountry": "ARPU by Country for Project A",
+    "purchasesInApp": "Purchases In App for Projects A and B",
+    "payingUsersPercentage": "Paying Users Percentage for Project A",
+    "totalArpu": "Total ARPU for Projects A and B",
+    "purchasesByDevice": "Purchases In App by Device for Project B",
+    "cumulativeTotalByTraffic": "Cumulative Total by Traffic Source for Project A",
+    "inAppArpu": "In-App ARPU for Projects A and B",
+    "cumulativeTotal": "Cumulative Total for Project A"
+  }
+}
