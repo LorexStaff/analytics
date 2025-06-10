@@ -28,6 +28,7 @@
     "redux-persist": "^6.0.0",
     "sass": "^1.85.0",
     "typescript": "^4.9.5",
+    "usehooks-ts": "^3.1.1",
     "web-vitals": "^2.1.4",
     "yup": "^1.6.1"
   },
