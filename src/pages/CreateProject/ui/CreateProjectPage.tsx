@@ -13,21 +13,56 @@ const CreateProjectPage: React.FC = () => {
   const [appName, setAppName] = useState("");
   const [apiKey, setApiKey] = useState("");
 
+  const [errors, setErrors] = useState({
+    platform: "",
+    projectLink: "",
+    appName: "",
+  });
+
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   const platforms = [
-    { value: "App Store", label: t("createProject.platform.AppStore") },
-    { value: "Google Play", label: t("createProject.platform.GooglePlay") },
-    { value: "RuStore", label: t("createProject.platform.RuStore") },
+    { value: "App Store", label: "AppStore" },
+    { value: "Google Play", label: "GooglePlay" },
+    { value: "RuStore", label: "RuStore" },
   ];
 
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      platform: "",
+      projectLink: "",
+      appName: "",
+    };
+
+    if (!platform) {
+      newErrors.platform = t("createProject.errors.requiredField");
+      isValid = false;
+    }
+
+    if (!projectLink) {
+      newErrors.projectLink = t("createProject.errors.requiredField");
+      isValid = false;
+    }
+
+    if (!appName) {
+      newErrors.appName = t("createProject.errors.requiredField");
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleContinue = async () => {
-    const fakeApiKey = `fake-api-key-${Math.random()
-      .toString(36)
-      .substr(2, 9)}`;
-    setApiKey(fakeApiKey);
-    setStep(2);
+    if (validateForm()) {
+      const fakeApiKey = `fake-api-key-${Math.random()
+        .toString(36)
+        .substr(2, 9)}`;
+      setApiKey(fakeApiKey);
+      setStep(2);
+    }
   };
 
   const handleCopy = () => {
@@ -51,6 +86,9 @@ const CreateProjectPage: React.FC = () => {
               onChange={setPlatform}
               placeholderKey={t("createProject.platformPlaceholder")}
             />
+            {errors.platform && (
+              <div className={styles.error}>{errors.platform}</div>
+            )}
 
             <Input
               type="text"
@@ -58,6 +96,9 @@ const CreateProjectPage: React.FC = () => {
               value={projectLink}
               onChange={(value) => setProjectLink(value)}
             />
+            {errors.projectLink && (
+              <div className={styles.error}>{errors.projectLink}</div>
+            )}
 
             <Input
               type="text"
@@ -65,6 +106,9 @@ const CreateProjectPage: React.FC = () => {
               value={appName}
               onChange={(value) => setAppName(value)}
             />
+            {errors.appName && (
+              <div className={styles.error}>{errors.appName}</div>
+            )}
 
             <div className={styles.buttonGroup}>
               <Button

@@ -7,6 +7,9 @@
     "apiKeyTitle": "Почти готово",
     "apiKeyMessage": "Чтобы начать пользоваться аналитикой, интегрируйте SDK Best Analytics в приложение.",
     "apiKeyLabel": "Ваш API ключ:",
-    "copyButton": "Скопировать"
+    "copyButton": "Скопировать",
+    "errors": {
+      "requiredField": "Это поле обязательно для заполнения."
+    }
   }
 }

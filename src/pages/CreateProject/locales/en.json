@@ -7,6 +7,9 @@
     "apiKeyTitle": "Almost Done",
     "apiKeyMessage": "To start using analytics, integrate the Best Analytics SDK into your app.",
     "apiKeyLabel": "Your API Key:",
-    "copyButton": "Copy"
+    "copyButton": "Copy",
+    "errors": {
+      "requiredField": "This field is required."
+    }
   }
 }
