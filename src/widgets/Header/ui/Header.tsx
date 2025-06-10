@@ -1,27 +1,12 @@
 import React from "react";
-import styles from "./Header.module.scss";
-import logo from "../assets/logo.svg";
-import Dropdown from "../../../features/ProjectsDropdown/ui/Dropdown";
-import LanguageDropdown from "../../../shared/components/LanguageDropdown/ui/LanguageDropdown";
-import SettingsDropdown from "../../../shared/components/SettingsDropdown/ui/SettingsDropdown";
-import ProfileDropdown from "../../../shared/components/ProfileDropdown/ui/ProfileDropdown";
+import { useMediaQuery } from "usehooks-ts";
+import HeaderMobile from "./HeaderMobile";
+import HeaderDesktop from "./HeaderDesktop";
 
 const Header: React.FC = () => {
-  return (
-    <header className={styles.header}>
-      <div className={styles.logoAndDropdown}>
-        <div className={styles.logo}>
-          <img src={logo} alt="logo" />
-        </div>
-        <Dropdown />
-      </div>
-      <div className={styles.rightSection}>
-        <ProfileDropdown />
-        <SettingsDropdown />
-        <LanguageDropdown />
-      </div>
-    </header>
-  );
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  return isMobile ? <HeaderMobile /> : <HeaderDesktop />;
 };
 
 export default Header;
