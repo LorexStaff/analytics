@@ -32,6 +32,8 @@ import authEn from "../../features/Auth/locales/en.json";
 import authRu from "../../features/Auth/locales/ru.json";
 import overviewEn from "../../pages/Overview/locales/en.json";
 import overviewRu from "../../pages/Overview/locales/ru.json";
+import monetizationPageEn from "../../pages/Monetization/locales/en.json";
+import monetizationPageRu from "../../pages/Monetization/locales/ru.json";
 
 const detectUserLanguage = () => {
   const userLanguage = navigator.language || navigator.languages[0];
@@ -58,6 +60,7 @@ const resources = {
       ...widgetEn,
       ...authEn,
       ...overviewEn,
+      ...monetizationPageEn,
     },
   },
   ru: {
@@ -78,6 +81,7 @@ const resources = {
       ...widgetRu,
       ...authRu,
       ...overviewRu,
+      ...monetizationPageRu,
     },
   },
 };

@@ -11,7 +11,7 @@ import styles from "./shared/components/styles/global.module.scss";
 import AppRouter from "./app/router/AppRouter";
 
 const AppContent: React.FC = () => {
-  const { isExpanded } = useSidebar();
+  const { isExpanded, isMobile } = useSidebar();
   const location = useLocation();
 
   const shouldShowSidebar =
@@ -41,11 +41,16 @@ const AppContent: React.FC = () => {
             flex: 1,
           }}
         >
-          {shouldShowSidebar && <Sidebar />}
+          {shouldShowSidebar && <Sidebar />}{" "}
           <div
             className={styles.main_content}
             style={{
-              marginLeft: shouldShowSidebar && isExpanded ? "348px" : "0",
+              marginLeft:
+                shouldShowSidebar && !isMobile
+                  ? isExpanded
+                    ? "328px"
+                    : "100px"
+                  : "0",
               transition: "margin-left 0.3s ease-in-out",
               paddingTop: shouldShowHeaderAndFooter ? "20px" : "0",
               paddingBottom: shouldShowHeaderAndFooter ? "20px" : "0",
@@ -54,7 +59,19 @@ const AppContent: React.FC = () => {
             <AppRouter />
           </div>
         </div>
-        {shouldShowHeaderAndFooter && <Footer />}
+        <div
+          style={{
+            marginLeft:
+              shouldShowSidebar && !isMobile
+                ? isExpanded
+                  ? "328px"
+                  : "100px"
+                : "0",
+            transition: "margin-left 0.3s ease-in-out",
+          }}
+        >
+          {shouldShowHeaderAndFooter && <Footer />}
+        </div>
       </div>
     </div>
   );
