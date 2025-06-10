@@ -69,18 +69,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
     <div className={styles.container}>
       <div className={styles.gradient}>
         <h1>{t("auth.welcome")}</h1>
-        <Button
-          variant="secondary"
-          size="medium"
-          className={styles.loginButton}
-          onClick={() =>
-            type === "login" ? navigate("/register") : navigate("/login")
-          }
-        >
-          {type === "login"
-            ? t("auth.switchToRegister")
-            : t("auth.switchToLogin")}
-        </Button>
       </div>
       <div className={styles.authContainer}>
         <form className={styles.form} onSubmit={handleSubmit}>
@@ -134,6 +122,19 @@ const AuthForm: React.FC<AuthFormProps> = ({ type }) => {
           >
             {type === "login" ? t("auth.login") : t("auth.register")}
           </Button>
+          <div className={styles.mobileSwitchButton}>
+            <Button
+              variant="outline"
+              className={styles.mobileLoginButton}
+              onClick={() =>
+                type === "login" ? navigate("/register") : navigate("/login")
+              }
+            >
+              {type === "login"
+                ? t("auth.switchToRegister")
+                : t("auth.switchToLogin")}
+            </Button>
+          </div>
         </form>
         <div className={styles.socialLogin}>
           <div className={styles.orTextContainer}>
