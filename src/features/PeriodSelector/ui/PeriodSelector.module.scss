@@ -1,0 +1,86 @@
+.periodSelector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 5px;
+  }
+
+  label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+
+    @media (max-width: 768px) {
+      font-size: 14px;
+    }
+  }
+
+  .buttonsContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+      gap: 5px;
+    }
+  }
+
+  .rightAlignedButton {
+    margin-right: 20px;
+
+    @media (max-width: 768px) {
+      margin-right: 0;
+    }
+  }
+}
+
+.periodButton {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    background-color: #f0f4f8;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &.active {
+    background-color: #6952eb;
+    color: white;
+    box-shadow: 0 6px 10px rgba(105, 82, 235, 0.3);
+  }
+}
+
+.dateRangePicker {
+  position: relative;
+  display: flex;
+  gap: 10px;
+}
+
+.datePickerInput {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 14px;
+  width: 160px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+
+  &:focus {
+    border-color: #6952eb;
+    outline: none;
+    box-shadow: 0 6px 10px rgba(105, 82, 235, 0.2);
+  }
+}
