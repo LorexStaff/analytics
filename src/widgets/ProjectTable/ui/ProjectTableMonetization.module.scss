@@ -1,0 +1,129 @@
+/* Базовые стили */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+
+  th,
+  td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    font-size: 14px; // Уменьшаем размер шрифта для адаптивности
+  }
+
+  th:first-child,
+  td:first-child {
+    width: 50px;
+    text-align: center;
+
+    input[type="checkbox"] {
+      margin: 0 auto;
+      display: block;
+    }
+  }
+
+  .noDataMessage {
+    text-align: center;
+    font-size: 18px;
+    color: #8c8c8c;
+    margin-top: 40px;
+  }
+
+  /* Стили для заголовков */
+  th {
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+      background-color: #f0f4f8;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 5px solid #000;
+      opacity: 0.5;
+    }
+
+    &.asc::after {
+      border-bottom: none;
+      border-top: 5px solid #000;
+    }
+
+    &.desc::after {
+      border-bottom: 5px solid #000;
+    }
+  }
+
+  th:first-child {
+    cursor: default;
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+/* Адаптивность для маленьких экранов */
+@media (max-width: 768px) {
+  .table {
+    display: block; // Переключаем таблицу на блочный вид
+    overflow-x: auto; // Добавляем горизонтальную прокрутку
+
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block; // Каждый элемент становится блоком
+    }
+
+    thead tr {
+      display: none; // Скрываем заголовки таблицы
+    }
+
+    tbody tr {
+      margin-bottom: 15px; // Добавляем отступ между строками
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    td {
+      text-align: right; // Выравниваем текст по правому краю
+      padding-left: 50%; // Создаем место для меток
+      position: relative;
+      height: 50px;
+
+      &:before {
+        content: attr(data-label); // Добавляем метку перед содержимым
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: wrap;
+        text-align: left;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.table {
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  overflow-x: auto; // Добавляем горизонтальную прокрутку
+  display: block; // Переключаем таблицу на блочный вид
+}

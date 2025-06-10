@@ -3,7 +3,15 @@
     "project": "Проект",
     "newUsers": "Новые пользователи",
     "activeUsers": "Активные пользователи",
-    "revenueGrowth": "Прирост прибыли",
-    "arpu": "ARPU"
+    "revenueGrowth": "Рост доходов",
+    "arpu": "ARPU",
+    "inAppARPU": "ARPU (внутри приложения)",
+    "payingUsersPercentage": "Процент платящих пользователей",
+    "purchasesInApp": "Покупки внутри приложения",
+    "cumulativeTotal": "Накопленный общий доход",
+    "totalARPU": "Общий ARPU",
+    "ProjectA": "Проект A",
+    "ProjectB": "Проект B",
+    "select": "Выбор"
   }
 }

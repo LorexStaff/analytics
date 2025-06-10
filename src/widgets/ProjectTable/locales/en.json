@@ -1,9 +1,17 @@
 {
   "projectTable": {
     "project": "Project",
-    "newUsers": "New Users",
-    "activeUsers": "Active Users",
-    "revenueGrowth": "Revenue Growth",
-    "arpu": "ARPU"
+    "newUsers": "New users",
+    "activeUsers": "Active users",
+    "revenueGrowth": "Revenue growth",
+    "arpu": "ARPU",
+    "inAppARPU": "In-app ARPU",
+    "payingUsersPercentage": "Paying users percentage",
+    "purchasesInApp": "In-app purchases",
+    "cumulativeTotal": "Cumulative total",
+    "totalARPU": "Total ARPU",
+    "ProjectA": "Project A",
+    "ProjectB": "Project B",
+    "select": "Choice"
   }
 }
