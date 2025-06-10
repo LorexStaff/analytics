@@ -22,9 +22,8 @@ const Footer: React.FC = () => {
             <a href="/about" className={styles.link}>
               {t("footer.about")}
             </a>
+            <div className={styles.copyright}>{t("footer.copyright")}</div>
           </div>
-
-          <div className={styles.copyright}>{t("footer.copyright")}</div>
         </div>
       </div>
     </footer>
