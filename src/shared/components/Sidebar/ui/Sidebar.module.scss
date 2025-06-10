@@ -25,24 +25,6 @@
   transition: all 0.3s ease-in-out;
   border-top-right-radius: 40px;
 
-  @media (max-width: 1200px) {
-    --menu-width: 240px;
-    height: calc(100vh - 100px);
-    top: 100px;
-  }
-
-  @media (max-width: 992px) {
-    --menu-width: 200px;
-    height: calc(100vh - 80px);
-    top: 80px;
-  }
-
-  @media (max-width: 768px) {
-    --menu-width: 160px;
-    height: calc(100vh - 60px);
-    top: 60px;
-  }
-
   &.active {
     transform: translateX(0);
   }
@@ -68,18 +50,6 @@
       padding-right: 5px;
       transition: all 0.3s ease-in-out;
       z-index: 2;
-
-      @media (max-width: 1200px) {
-        font-size: 18px;
-      }
-
-      @media (max-width: 992px) {
-        font-size: 16px;
-      }
-
-      @media (max-width: 768px) {
-        font-size: 14px;
-      }
     }
 
     .hover_oval {
@@ -104,21 +74,6 @@
       &.expanded {
         width: 250px;
         height: 50px;
-
-        @media (max-width: 1200px) {
-          width: 220px;
-          height: 45px;
-        }
-
-        @media (max-width: 992px) {
-          width: 190px;
-          height: 40px;
-        }
-
-        @media (max-width: 768px) {
-          width: 150px;
-          height: 35px;
-        }
       }
     }
 
@@ -152,15 +107,7 @@
   transition: all 0.3s ease-in-out;
 
   @media (max-width: 1200px) {
-    left: 300px;
-  }
-
-  @media (max-width: 992px) {
-    left: 250px;
-  }
-
-  @media (max-width: 768px) {
-    left: 200px;
+    left: 280px;
   }
 
   &:hover {
@@ -246,25 +193,9 @@
 }
 
 .collapseButtonContainer {
-  position: absolute;
-  top: calc(100vh - 520px);
-  left: -7px;
   display: flex;
   align-items: center;
   transition: transform 0.3s ease;
-
-  @media (max-height: 700px) {
-    top: calc(100vh - 480px);
-  }
-  @media (max-height: 600px) {
-    top: calc(100vh - 450px);
-  }
-  @media (max-height: 500px) {
-    top: calc(100vh - 430px);
-  }
-  @media (max-height: 400px) {
-    top: calc(100vh - 410px);
-  }
 }
 
 .rotated {
@@ -316,24 +247,8 @@
 }
 
 .logoutButtonContainer {
-  position: absolute;
-  top: calc(100vh - 520px);
-  left: -7px;
   display: flex;
   align-items: center;
-
-  @media (max-height: 700px) {
-    top: calc(100vh - 480px);
-  }
-  @media (max-height: 600px) {
-    top: calc(100vh - 450px);
-  }
-  @media (max-height: 500px) {
-    top: calc(100vh - 440px);
-  }
-  @media (max-height: 400px) {
-    top: calc(100vh - 420px);
-  }
 }
 
 .logoutButton {
